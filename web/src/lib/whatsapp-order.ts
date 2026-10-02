@@ -35,9 +35,9 @@ export function productOrderMessage(
     photo,
     "",
     "Please confirm:",
-    "• Availability / stock for this piece",
-    "• Delivery to my area",
-    "• Installation quote (if needed)",
+    "• Availability / stock for this exact piece",
+    "• Installation instructions or install quote",
+    "• Delivery to my area (fee and timing)",
   );
   return lines.join("\n");
 }
