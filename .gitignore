@@ -1,0 +1,29 @@
+# OS / editor
+.DS_Store
+*.log
+.env
+.env.*
+!.env.example
+
+# Dependencies & build
+node_modules/
+web/node_modules/
+web/.next/
+web/out/
+web/coverage/
+web/.turbo/
+
+# Loose source images at repo root (canonical copies live in web/public)
+/*.jpeg
+/*.jpg
+/*.png
+/*.JPG
+/*.JPEG
+
+# Prisma
+web/prisma/*.db
+web/prisma/*.db-journal
+
+# Misc
+*.tsbuildinfo
+web/.env
