@@ -7,15 +7,22 @@ import { formatPrice, type Product } from "@/lib/data";
 
 type Featured = Pick<Product, "slug" | "name" | "price" | "image" | "category" | "type">;
 
+const FIVE_MINUTES_MS = 5 * 60 * 1000;
+
 export function HeroFeaturedRotator({ products }: { products: Featured[] }) {
   const [index, setIndex] = useState(0);
+  const [visible, setVisible] = useState(true);
   const list = products.length ? products : [];
 
   useEffect(() => {
     if (list.length < 2) return;
     const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % list.length);
-    }, 4200);
+      setVisible(false);
+      window.setTimeout(() => {
+        setIndex((i) => (i + 1) % list.length);
+        setVisible(true);
+      }, 280);
+    }, FIVE_MINUTES_MS);
     return () => window.clearInterval(id);
   }, [list.length]);
 
@@ -25,8 +32,10 @@ export function HeroFeaturedRotator({ products }: { products: Featured[] }) {
   return (
     <Link
       href={`/products/${p.slug}`}
-      className="group absolute right-4 bottom-24 sm:right-8 sm:bottom-32 md:right-10 md:bottom-36 z-10 w-[42vw] max-w-[220px] sm:w-[240px] sm:max-w-none border border-paper/25 bg-ink/55 backdrop-blur-sm rounded-md overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-transform duration-500 hover:scale-[1.02]"
-      aria-live="polite"
+      className={`hero-featured-float group absolute right-4 bottom-24 sm:right-8 sm:bottom-32 md:right-10 md:bottom-36 z-10 w-[42vw] max-w-[220px] sm:w-[240px] sm:max-w-none border border-paper/25 bg-ink/55 backdrop-blur-sm rounded-md overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.35)] transition-opacity duration-300 ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+      aria-label={`Featured product: ${p.name}`}
     >
       <div className="relative aspect-[4/5] bg-mist">
         <Image
@@ -34,9 +43,9 @@ export function HeroFeaturedRotator({ products }: { products: Featured[] }) {
           src={p.image}
           alt={p.name}
           fill
-          className="object-cover transition-opacity duration-700"
+          className="object-cover"
           sizes="240px"
-          priority={index === 0}
+          priority={false}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/20 to-transparent" />
         <p className="absolute top-2.5 left-2.5 label text-[0.55rem] tracking-[0.14em] text-paper bg-ink/50 px-2 py-1 rounded-full border border-paper/20">
@@ -51,16 +60,6 @@ export function HeroFeaturedRotator({ products }: { products: Featured[] }) {
           </p>
           <p className="text-paper text-xs sm:text-sm font-medium">{formatPrice(p.price)}</p>
         </div>
-      </div>
-      <div className="flex gap-1 px-3 py-2 bg-ink/80">
-        {list.map((_, i) => (
-          <span
-            key={i}
-            className={`h-0.5 flex-1 rounded-full transition-colors ${
-              i === index ? "bg-paper" : "bg-paper/25"
-            }`}
-          />
-        ))}
       </div>
     </Link>
   );

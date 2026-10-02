@@ -25,6 +25,9 @@ export async function generateMetadata() {
   return seoMetadata("/");
 }
 
+/** Cache the heavy homepage HTML; refresh catalogue snippets periodically. */
+export const revalidate = 300;
+
 export default function HomePage() {
   return (
     <>

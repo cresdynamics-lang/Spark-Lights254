@@ -2,46 +2,71 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, WhatsAppButton } from "@/components/ui/Button";
 import { DELIVERY_AREAS } from "@/lib/constants";
-import { catalogProducts } from "@/lib/catalog";
+import { prisma } from "@/lib/db";
+import { products as staticProducts } from "@/lib/data";
 import { HeroFeaturedRotator } from "@/components/home/HeroFeaturedRotator";
 
-const FEATURE_CATEGORIES = [
+const FEATURE_CATEGORY_SLUGS = [
   "ceiling-lights",
   "wall-lights",
   "chandeliers",
   "pendant-lights",
-  "bedroom",
   "outdoor-solar",
 ];
 
+/** Small curated set only — avoids loading the full catalogue on the homepage. */
 async function featuredForHero() {
-  const all = await catalogProducts();
-  const picks: typeof all = [];
-  const used = new Set<string>();
+  try {
+    const rows = await prisma.product.findMany({
+      where: { published: true },
+      select: {
+        slug: true,
+        name: true,
+        price: true,
+        image: true,
+        type: true,
+        rooms: true,
+        category: { select: { slug: true } },
+      },
+      orderBy: { sortOrder: "asc" },
+      take: 40,
+    });
 
-  for (const cat of FEATURE_CATEGORIES) {
-    const match = all.find(
-      (p) =>
-        !used.has(p.slug) &&
-        (p.category === cat ||
-          p.rooms?.includes(cat) ||
-          p.type.toLowerCase().includes(cat.split("-")[0])),
-    );
-    if (match) {
-      picks.push(match);
-      used.add(match.slug);
+    if (rows.length) {
+      const picks: typeof rows = [];
+      const used = new Set<string>();
+      for (const cat of FEATURE_CATEGORY_SLUGS) {
+        const match = rows.find((p) => {
+          if (used.has(p.slug)) return false;
+          if (p.category.slug === cat) return true;
+          if (cat === "ceiling-lights" && p.rooms.includes("bedroom")) return true;
+          return p.type.toLowerCase().includes(cat.split("-")[0]);
+        });
+        if (match) {
+          picks.push(match);
+          used.add(match.slug);
+        }
+      }
+      for (const p of rows) {
+        if (picks.length >= 6) break;
+        if (used.has(p.slug)) continue;
+        picks.push(p);
+        used.add(p.slug);
+      }
+      return picks.slice(0, 6).map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        image: p.image,
+        category: p.category.slug,
+        type: p.type,
+      }));
     }
+  } catch {
+    /* fall through to static */
   }
 
-  // Fill from remaining catalogue so we always rotate several pieces
-  for (const p of all) {
-    if (picks.length >= 8) break;
-    if (used.has(p.slug)) continue;
-    picks.push(p);
-    used.add(p.slug);
-  }
-
-  return picks.slice(0, 8).map((p) => ({
+  return staticProducts.slice(0, 6).map((p) => ({
     slug: p.slug,
     name: p.name,
     price: p.price,
@@ -62,6 +87,7 @@ export async function Hero() {
           alt="Sparklights featured lighting"
           fill
           priority
+          quality={70}
           className="object-cover object-[center_30%] sm:object-center opacity-90"
           sizes="100vw"
         />

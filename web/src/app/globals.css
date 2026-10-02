@@ -93,8 +93,27 @@ body {
   animation: areaTicker 40s linear infinite;
 }
 
+/* Gentle upward drift for the single hero featured product card */
+@keyframes heroFeaturedFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.hero-featured-float {
+  animation: heroFeaturedFloat 6s ease-in-out infinite;
+  will-change: transform;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .area-ticker {
+    animation: none;
+  }
+  .hero-featured-float {
     animation: none;
   }
 }
