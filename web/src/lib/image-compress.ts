@@ -67,11 +67,17 @@ export async function compressImageFile(
   const before = input.length;
   const { buffer, ext } = await compressImageBuffer(input, opts);
 
-  const outPath =
-    extname(filePath).toLowerCase() === ".jpg" || extname(filePath).toLowerCase() === ".jpeg"
-      ? filePath.replace(/\.jpeg$/i, ".jpg")
-      : filePath.replace(/\.[^.]+$/, "") + ext;
+  const origExt = extname(filePath).toLowerCase();
+  // Keep original extension so DB paths (.jpeg) stay valid; only convert exotic types to .jpg
+  const keepExt =
+    origExt === ".jpg" || origExt === ".jpeg" || origExt === ".png" || origExt === ".webp"
+      ? origExt === ".png" || origExt === ".webp"
+        ? ".jpg"
+        : origExt
+      : ext;
+  const outPath = filePath.replace(/\.[^.]+$/, "") + keepExt;
 
+  // If output is jpeg/jpg, write jpeg buffer; path extension must match
   await writeFile(outPath, buffer);
   if (outPath !== filePath) {
     try {
