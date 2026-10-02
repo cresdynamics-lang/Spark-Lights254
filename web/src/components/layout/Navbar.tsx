@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { categories, rooms } from "@/lib/data";
 import { SITE } from "@/lib/constants";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -65,19 +66,10 @@ export function Navbar() {
       >
         <div
           className={`mx-auto max-w-7xl px-4 sm:px-5 md:px-8 flex items-center justify-between gap-3 transition-all duration-500 ${
-            compact ? "h-14 sm:h-16" : "h-16 sm:h-[4.75rem] md:h-20"
+            compact ? "h-16 sm:h-[4.5rem]" : "h-[4.75rem] sm:h-24 md:h-28"
           }`}
         >
-          <Link href="/" className="shrink-0 min-w-0">
-            <span className="font-serif text-lg sm:text-xl md:text-2xl tracking-[0.1em] sm:tracking-[0.12em] uppercase text-ink block leading-none">
-              Sparklights
-            </span>
-            {!compact ? (
-              <span className="label mt-1 hidden xs:block sm:block tracking-[0.16em] sm:tracking-[0.2em] text-[0.6rem] sm:text-[0.6875rem]">
-                254 · Lighting · Nairobi
-              </span>
-            ) : null}
-          </Link>
+          <BrandLogo size={compact ? "md" : "xl"} compact={compact} priority />
 
           <nav className="hidden lg:flex items-center gap-1">
             <div
@@ -307,6 +299,9 @@ export function Navbar() {
         {/* Mobile dropdown menu */}
         {mobileOpen ? (
           <div className="lg:hidden absolute left-0 right-0 top-full z-[60] border-b border-line bg-paper shadow-[0_12px_40px_rgba(0,0,0,0.08)] max-h-[min(78vh,640px)] overflow-y-auto">
+            <div className="px-4 pt-4 pb-2 border-b border-line">
+              <BrandLogo size="lg" />
+            </div>
             <nav className="px-4 py-2">
               <Link
                 href="/search"

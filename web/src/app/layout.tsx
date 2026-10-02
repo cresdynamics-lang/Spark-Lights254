@@ -24,17 +24,37 @@ const cormorant = Cormorant_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Lighting Shop Nairobi | Chandeliers & Ceiling Lights",
-    template: "%s",
+    default: "Sparklights 254 | Lighting Shop Nairobi",
+    template: "%s | Sparklights 254",
   },
   description:
     "Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Same-day delivery across Nairobi. Installed properly.",
+  applicationName: SITE.fullName,
   alternates: { canonical: SITE.url },
+  icons: {
+    icon: [{ url: SITE.logo, type: "image/jpeg" }],
+    apple: [{ url: SITE.logo }],
+    shortcut: SITE.logo,
+  },
   openGraph: {
     type: "website",
     locale: "en_KE",
     siteName: SITE.fullName,
     url: SITE.url,
+    title: "Sparklights 254 | Lighting Shop Nairobi",
+    images: [
+      {
+        url: SITE.logo,
+        width: 320,
+        height: 320,
+        alt: `${SITE.fullName} logo`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Sparklights 254 | Lighting Shop Nairobi",
+    images: [SITE.logo],
   },
 };
 

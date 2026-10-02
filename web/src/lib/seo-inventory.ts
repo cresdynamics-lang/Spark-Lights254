@@ -53,7 +53,7 @@ const rows: SeoInventoryRow[] = [
   // Home
   {
     path: "/",
-    title: "Lighting Shop Nairobi | Chandeliers & Ceiling Lights",
+    title: "Sparklights 254 | Lighting Shop Nairobi",
     description:
       "Chandeliers, wall lights and ceiling lights for Kenyan homes. Same-day Nairobi delivery and installation. Order on WhatsApp.",
     h1: "Light that makes a house feel like home.",

@@ -1,15 +1,13 @@
 import Link from "next/link";
 import { SITE, DELIVERY_AREAS, whatsappUrl } from "@/lib/constants";
+import { BrandLogo } from "@/components/layout/BrandLogo";
 
 export function Footer() {
   return (
     <footer className="bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-1 space-y-5">
-          <div>
-            <p className="font-serif text-2xl tracking-[0.12em] uppercase">Sparklights</p>
-            <p className="label text-paper/50 mt-1 tracking-[0.18em]">254 · Lighting · Nairobi</p>
-          </div>
+          <BrandLogo size="xl" onDark />
           <p className="text-sm text-paper/70 leading-relaxed">
             Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Delivered
             fast. Installed properly.

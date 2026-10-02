@@ -23,6 +23,8 @@ export const SITE = {
     },
   ],
   url: "https://sparklights.co.ke",
+  /** Official brand mark — chandelier logo used sitewide */
+  logo: "/images/brand/sparklights-logo.jpg",
   /** PLACEHOLDER social profiles */
   sameAs: {
     instagram: "",

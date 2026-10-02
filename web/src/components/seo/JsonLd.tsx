@@ -15,7 +15,7 @@ export function organizationSchema() {
     "@type": "Organization",
     name: SITE.fullName,
     url: SITE.url,
-    logo: `${SITE.url}/images/products/7500.jpeg`,
+    logo: `${SITE.url}${SITE.logo}`,
     email: SITE.email,
     telephone: SITE.phoneTel,
     sameAs: [
@@ -49,7 +49,7 @@ export function localBusinessSchema() {
     "@context": "https://schema.org",
     "@type": "LightingStore",
     name: SITE.fullName,
-    image: `${SITE.url}/images/products/7500.jpeg`,
+    image: `${SITE.url}${SITE.logo}`,
     url: SITE.url,
     telephone: SITE.phoneTel,
     email: SITE.email,
@@ -159,7 +159,7 @@ export function articleSchema(opts: {
     publisher: {
       "@type": "Organization",
       name: SITE.fullName,
-      logo: { "@type": "ImageObject", url: `${SITE.url}/images/products/7500.jpeg` },
+      logo: { "@type": "ImageObject", url: `${SITE.url}${SITE.logo}` },
     },
     mainEntityOfPage: `${SITE.url}${opts.path}`,
     ...(opts.image

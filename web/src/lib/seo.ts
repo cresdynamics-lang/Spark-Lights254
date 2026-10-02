@@ -60,6 +60,14 @@ export async function seoMetadata(path: string, overrides?: Partial<Metadata>): 
       siteName: SITE.fullName,
       locale: "en_KE",
       type: "website",
+      images: [
+        {
+          url: SITE.logo,
+          width: 320,
+          height: 320,
+          alt: `${SITE.fullName} logo`,
+        },
+      ],
     },
     ...overrides,
   };
