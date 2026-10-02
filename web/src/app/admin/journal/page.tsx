@@ -1,11 +1,6 @@
-import { AdminStub } from "@/components/admin/AdminStub";
+import { redirect } from "next/navigation";
 
+/** Journal posts are managed via the Blogs CRUD (Prisma Blog → /journal). */
 export default function Page() {
-  return (
-    <AdminStub
-      title="Journal"
-      body="Write and schedule lighting guides with a search checklist. Links each article up to its audience page."
-      links={[{ href: "/journal", label: "View journal" }]}
-    />
-  );
+  redirect("/admin/blogs");
 }
