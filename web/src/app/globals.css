@@ -80,6 +80,25 @@ body {
   }
 }
 
+@keyframes areaTicker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.area-ticker {
+  animation: areaTicker 40s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .area-ticker {
+    animation: none;
+  }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(16px);

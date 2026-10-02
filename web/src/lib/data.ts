@@ -1134,6 +1134,67 @@ export function productsByRoom(roomSlug: string) {
   return products.filter((p) => p.rooms.includes(roomSlug));
 }
 
+/** Style lookbook collections used by /collection/[style]. */
+export const STYLE_COLLECTIONS = [
+  {
+    slug: "crystal",
+    name: "Crystal",
+    headline: "Crystal lighting in Nairobi",
+    description:
+      "Faceted glass and crystal that catches light in dining rooms and entrances.",
+    match: ["crystal"],
+    image: "/images/products/7500.jpeg",
+  },
+  {
+    slug: "gold-brass",
+    name: "Gold & brass",
+    headline: "Gold and brass lighting in Nairobi",
+    description:
+      "Warm metal finishes for dining rooms, bedrooms and feature walls.",
+    match: ["gold", "brass"],
+    image: "/images/products/7000.jpeg",
+  },
+  {
+    slug: "black",
+    name: "Black",
+    headline: "Black lighting in Nairobi",
+    description: "Matte and polished black fixtures for modern rooms.",
+    match: ["black"],
+    image: "/images/products/2999.jpeg",
+  },
+  {
+    slug: "natural",
+    name: "Natural timber",
+    headline: "Natural timber and rattan lighting",
+    description: "Wood, rattan and natural textures for softer rooms.",
+    match: ["natural", "timber", "rattan"],
+    image: "/images/products/3999.jpeg",
+  },
+  {
+    slug: "glowing",
+    name: "Glowing",
+    headline: "Glowing LED lighting in Nairobi",
+    description: "Soft-glow and LED pieces that read as light sculpture.",
+    match: ["glow", "led"],
+    image: "/images/products/round1.jpg",
+  },
+] as const;
+
+export function getStyleCollection(slug: string) {
+  return STYLE_COLLECTIONS.find((s) => s.slug === slug);
+}
+
+export function productsByStyle(styleSlug: string) {
+  const style = getStyleCollection(styleSlug);
+  if (!style) return [];
+  return products.filter((p) =>
+    p.styles.some((s) => {
+      const lower = s.toLowerCase();
+      return style.match.some((m) => lower.includes(m));
+    }),
+  );
+}
+
 export function signatureProducts() {
   return products.filter((p) => p.signature || p.badge === "Signature");
 }

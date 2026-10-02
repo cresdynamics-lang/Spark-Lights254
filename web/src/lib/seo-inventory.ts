@@ -148,6 +148,78 @@ const rows: SeoInventoryRow[] = [
     indexable: true,
     published: true,
   },
+  {
+    path: "/collection",
+    title: "Lighting Collection Nairobi | Shop by Style",
+    description:
+      "Explore crystal, gold & brass, black, natural timber and glowing lights. Shop the Sparklights lookbook in Nairobi.",
+    h1: "Explore the collection",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/collection/crystal",
+    title: "Crystal Lighting in Nairobi | Sparklights",
+    description:
+      "Crystal chandeliers and glass fixtures for dining rooms and entrances. Delivered and installed across Nairobi.",
+    h1: "Crystal lighting in Nairobi",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/collection",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/collection/gold-brass",
+    title: "Gold & Brass Lighting Nairobi | Sparklights",
+    description:
+      "Warm gold and brass wall lights, pendants and ceiling fixtures. Delivered across Nairobi. Order on WhatsApp.",
+    h1: "Gold and brass lighting in Nairobi",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/collection",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/collection/black",
+    title: "Black Lighting in Nairobi | Modern Fixtures",
+    description:
+      "Matte and polished black lights for modern rooms. Chandeliers, wall lights and ceiling fixtures in Nairobi.",
+    h1: "Black lighting in Nairobi",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/collection",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/collection/natural",
+    title: "Natural Timber Lighting Nairobi | Sparklights",
+    description:
+      "Wood, rattan and natural-texture lights for softer rooms. Delivered in Nairobi. Order on WhatsApp.",
+    h1: "Natural timber and rattan lighting",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/collection",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/collection/glowing",
+    title: "Glowing LED Lighting Nairobi | Sparklights",
+    description:
+      "Soft-glow and LED light sculptures for living rooms and bedrooms. Delivered and installed in Nairobi.",
+    h1: "Glowing LED lighting in Nairobi",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/collection",
+    indexable: true,
+    published: true,
+  },
   // Audience
   {
     path: "/podcast-studio-lighting-nairobi",

@@ -32,7 +32,7 @@ export function Hero() {
         </p>
         <div className="flex flex-row gap-2 sm:gap-3 mb-6 sm:mb-14 w-full">
           <Button
-            href="/shop/chandeliers"
+            href="/collection"
             className="!bg-white !text-black !border-white hover:!bg-mist flex-1 sm:flex-none justify-center px-3 sm:px-6 text-[0.58rem] sm:text-[0.6875rem] whitespace-nowrap"
           >
             Explore the collection
