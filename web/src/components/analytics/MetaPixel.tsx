@@ -1,30 +1,12 @@
-"use client";
-
 import Script from "next/script";
-import { usePathname, useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useRef } from "react";
+import { Suspense } from "react";
 import { META_PIXEL_ID } from "@/lib/meta-pixel";
+import { MetaPixelPageView } from "@/components/analytics/MetaPixelPageView";
 
-function MetaPixelPageView() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const first = useRef(true);
-
-  useEffect(() => {
-    // Initial PageView is fired from the base script; skip duplicate on mount.
-    if (first.current) {
-      first.current = false;
-      return;
-    }
-    if (pathname?.startsWith("/admin")) return;
-    if (typeof window.fbq === "function") {
-      window.fbq("track", "PageView");
-    }
-  }, [pathname, searchParams]);
-
-  return null;
-}
-
+/**
+ * Meta Pixel base snippet (server-rendered) + SPA PageView tracker.
+ * Pixel ID: 996247916797830
+ */
 export function MetaPixel() {
   return (
     <>
