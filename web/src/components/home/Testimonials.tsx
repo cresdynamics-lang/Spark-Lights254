@@ -14,7 +14,7 @@ export function Testimonials() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
           {testimonials.map((t) => (
             <blockquote
-              key={t.area + t.quote.slice(0, 12)}
+              key={t.name + t.area}
               className="border border-line bg-paper p-5 sm:p-8 flex flex-col justify-between min-h-[200px] sm:min-h-[260px] rounded-md"
             >
               <p className="font-serif text-xl sm:text-2xl leading-snug text-ink">

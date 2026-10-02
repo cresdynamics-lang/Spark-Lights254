@@ -1027,19 +1027,55 @@ export const testimonials = [
   {
     quote:
       "Delivered the same afternoon and fitted perfectly. The room looks completely different.",
-    name: "Client Name",
+    name: "James",
     area: "Kilimani",
   },
   {
     quote:
       "They helped us choose the right size for our double-height entrance.",
-    name: "Client Name",
+    name: "Kimani",
     area: "Gigiri",
   },
   {
     quote:
       "Consistent, quick and no mess left behind. Easy from start to finish.",
-    name: "Client Name",
+    name: "Dan",
+    area: "Kitengela",
+  },
+  {
+    quote:
+      "Ordered on WhatsApp in the morning and the chandelier was up by evening.",
+    name: "Wickliffe",
+    area: "Kileleshwa",
+  },
+  {
+    quote:
+      "Clear advice on warm versus cool light. The bedroom feel is exactly what we wanted.",
+    name: "Nelson",
+    area: "Rongai",
+  },
+  {
+    quote:
+      "Professional installers. They tested every fixture before they left.",
+    name: "John",
+    area: "Kilimani",
+  },
+  {
+    quote:
+      "Beautiful wall lights for the hallway. Guests always ask where we got them.",
+    name: "Margaret",
+    area: "Kileleshwa",
+  },
+  {
+    quote:
+      "From quote to install, everything was straightforward. Highly recommend.",
+    name: "Vera",
+    area: "Gigiri",
+  },
+  {
+    quote:
+      "Great range and honest sizing help for our dining room. Looks premium.",
+    name: "Kabugi",
     area: "Kitengela",
   },
 ];
