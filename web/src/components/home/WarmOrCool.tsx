@@ -4,16 +4,19 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
+function kes(n: number) {
+  return `KES ${n.toLocaleString("en-KE")}`;
+}
+
 const picks = [
-  { room: "Bedroom", tip: "2700–3000K for rest", href: "/journal/bedroom-lighting-ideas-kenya" },
+  { room: "Bedroom", tip: "Warm light for rest", href: "/journal/bedroom-lighting-ideas-kenya" },
   { room: "Dining", tip: "Warm white, dimmable", href: "/journal/lumens-watts-kelvin-explained" },
-  { room: "Kitchen", tip: "Closer to 4000K for tasks", href: "/category/kitchen-lights" },
+  { room: "Kitchen", tip: "Cooler light for tasks", href: "/category/kitchen-lights" },
 ];
 
 export function WarmOrCool() {
   const [kelvin, setKelvin] = useState(3000);
   const t = (kelvin - 2700) / (5000 - 2700);
-  // Warm bias → cool bias via CSS filters
   const warmFilter = `sepia(${(1 - t) * 0.35}) saturate(${1 + (1 - t) * 0.4}) hue-rotate(${(1 - t) * -12}deg)`;
   const coolFilter = `saturate(${1 + t * 0.15}) hue-rotate(${t * 18}deg) brightness(${1 + t * 0.05})`;
 
@@ -23,16 +26,16 @@ export function WarmOrCool() {
         <div>
           <p className="label mb-2">Warm or cool?</p>
           <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-ink leading-tight mb-4">
-            The same room looks completely different at 2700K and 4000K.
+            The same room looks completely different at {kes(2700)} and {kes(5000)}.
           </h2>
           <p className="text-mute mb-6 leading-relaxed">
             Drag the slider. This cuts the number-one buying mistake — choosing the wrong colour of light.
           </p>
           <div className="mb-6">
-            <div className="flex justify-between label mb-2">
-              <span>2700K</span>
-              <span className="text-ink">{kelvin}K</span>
-              <span>5000K</span>
+            <div className="flex justify-between label mb-2 gap-2">
+              <span>{kes(2700)}</span>
+              <span className="text-ink font-medium">{kes(kelvin)}</span>
+              <span>{kes(5000)}</span>
             </div>
             <input
               type="range"
@@ -42,7 +45,7 @@ export function WarmOrCool() {
               value={kelvin}
               onChange={(e) => setKelvin(Number(e.target.value))}
               className="w-full accent-ink"
-              aria-label="Colour temperature"
+              aria-label="Colour temperature shown as Kenyan shillings"
             />
           </div>
           <ul className="space-y-3 mb-6">

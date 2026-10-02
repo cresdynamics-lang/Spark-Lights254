@@ -6,7 +6,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 export async function LightingGuides() {
   const posts = await listPublishedBlogs();
-  const featured = posts.slice(0, 3);
+  const featured = posts.slice(0, 4);
 
   return (
     <section className="border-t border-line bg-paper">
@@ -20,7 +20,7 @@ export async function LightingGuides() {
             Practical guides from the team who install the lights.
           </p>
         </Reveal>
-        <div className="grid sm:grid-cols-3 gap-3 mb-8">
+        <div className="grid grid-cols-2 gap-3 sm:gap-5 mb-8">
           {featured.map((p, i) => (
             <Link
               key={p.slug}
@@ -33,18 +33,22 @@ export async function LightingGuides() {
                   alt={p.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width:640px) 100vw, 33vw"
+                  sizes="(max-width:640px) 50vw, 50vw"
                   loading="lazy"
                 />
               </div>
-              <div className="p-5 min-h-[140px] flex flex-col justify-between">
+              <div className="p-3 sm:p-5 min-h-[120px] sm:min-h-[140px] flex flex-col justify-between">
                 <div>
-                  <p className="label mb-2">
+                  <p className="label mb-1 sm:mb-2 text-[0.55rem] sm:text-[0.6875rem]">
                     {p.topic} · {p.minutes} min
                   </p>
-                  <h3 className="font-serif text-2xl leading-snug text-ink">{p.title}</h3>
+                  <h3 className="font-serif text-base sm:text-2xl leading-snug text-ink line-clamp-3">
+                    {p.title}
+                  </h3>
                 </div>
-                <p className="text-mute text-sm mt-3 line-clamp-2">{p.excerpt}</p>
+                <p className="text-mute text-xs sm:text-sm mt-2 sm:mt-3 line-clamp-2 hidden sm:block">
+                  {p.excerpt}
+                </p>
               </div>
             </Link>
           ))}

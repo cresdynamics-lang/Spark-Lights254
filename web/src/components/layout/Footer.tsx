@@ -6,8 +6,8 @@ import { MetaWhatsAppLink } from "@/components/analytics/MetaWhatsAppLink";
 export function Footer() {
   return (
     <footer className="bg-ink text-paper">
-      <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-2 lg:grid-cols-5">
-        <div className="lg:col-span-1 space-y-5">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 grid gap-10 md:grid-cols-[1.2fr_1.8fr] lg:grid-cols-[1.1fr_2fr_1fr]">
+        <div className="space-y-5">
           <BrandLogo size="xl" onDark />
           <p className="text-sm text-paper/70 leading-relaxed">
             Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Delivered
@@ -19,76 +19,85 @@ export function Footer() {
           <p className="text-sm text-paper/60">{SITE.whatsappDisplay}</p>
         </div>
 
-        <div>
-          <p className="label text-paper/50 mb-4">Shop</p>
-          <ul className="space-y-2.5 text-sm text-paper/80">
-            {[
-              ["Chandeliers", "/shop/chandeliers"],
-              ["Wall Lights", "/shop/wall-lights"],
-              ["Ceiling Lights", "/shop/ceiling-lights"],
-              ["Pendant Lights", "/shop/pendant-lights"],
-              ["Table & Floor Lamps", "/shop/table-floor-lamps"],
-              ["Outdoor Lights", "/shop/outdoor-solar"],
-              ["Shop all", "/shop"],
-              ["New arrivals", "/new-arrivals"],
-              ["Sale", "/sale"],
-            ].map(([label, href]) => (
-              <li key={href}>
-                <Link href={href} className="hover:text-paper transition-colors">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        {/* Shop · Rooms · Company — three columns, one row */}
+        <div className="grid grid-cols-3 gap-3 sm:gap-6 min-w-0">
+          <div className="min-w-0">
+            <p className="text-[0.55rem] sm:text-[0.65rem] tracking-[0.14em] uppercase text-paper/50 mb-3">
+              Shop
+            </p>
+            <ul className="space-y-1.5 sm:space-y-2 text-[0.7rem] sm:text-xs text-paper/80 leading-snug">
+              {[
+                ["Chandeliers", "/shop/chandeliers"],
+                ["Wall Lights", "/shop/wall-lights"],
+                ["Ceiling Lights", "/shop/ceiling-lights"],
+                ["Pendant Lights", "/shop/pendant-lights"],
+                ["Table & Floor", "/shop/table-floor-lamps"],
+                ["Outdoor Lights", "/shop/outdoor-solar"],
+                ["Shop all", "/shop"],
+                ["New arrivals", "/new-arrivals"],
+                ["Sale", "/sale"],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="hover:text-paper transition-colors">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[0.55rem] sm:text-[0.65rem] tracking-[0.14em] uppercase text-paper/50 mb-3">
+              Rooms
+            </p>
+            <ul className="space-y-1.5 sm:space-y-2 text-[0.7rem] sm:text-xs text-paper/80 leading-snug">
+              {[
+                ["Dining Room", "/rooms/dining-room"],
+                ["Bedroom", "/rooms/bedroom"],
+                ["Kitchen", "/rooms/kitchen"],
+                ["Living Room", "/rooms/living-room"],
+                ["Entrance & Hallway", "/rooms/entrance-hallway"],
+                ["Bathroom & Mirror", "/rooms/bathroom-mirror"],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="hover:text-paper transition-colors">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="min-w-0">
+            <p className="text-[0.55rem] sm:text-[0.65rem] tracking-[0.14em] uppercase text-paper/50 mb-3">
+              Company
+            </p>
+            <ul className="space-y-1.5 sm:space-y-2 text-[0.7rem] sm:text-xs text-paper/80 leading-snug">
+              {[
+                ["Signature", "/signature"],
+                ["Projects", "/projects"],
+                ["Delivery", "/delivery"],
+                ["Journal", "/journal"],
+                ["Request a quote", "/request-a-quote"],
+                ["About", "/about"],
+                ["Contact", "/contact"],
+                ["Staff", "/admin"],
+              ].map(([label, href]) => (
+                <li key={href}>
+                  <Link href={href} className="hover:text-paper transition-colors">
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         <div>
-          <p className="label text-paper/50 mb-4">Rooms</p>
-          <ul className="space-y-2.5 text-sm text-paper/80">
-            {[
-              ["Dining Room", "/rooms/dining-room"],
-              ["Bedroom", "/rooms/bedroom"],
-              ["Kitchen", "/rooms/kitchen"],
-              ["Living Room", "/rooms/living-room"],
-              ["Entrance & Hallway", "/rooms/entrance-hallway"],
-              ["Bathroom & Mirror", "/rooms/bathroom-mirror"],
-            ].map(([label, href]) => (
-              <li key={href}>
-                <Link href={href} className="hover:text-paper transition-colors">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="label text-paper/50 mb-4">Company</p>
-          <ul className="space-y-2.5 text-sm text-paper/80">
-            {[
-              ["Signature Collection", "/signature"],
-              ["Projects", "/projects"],
-              ["Delivery & Installation", "/delivery"],
-              ["Lighting Journal", "/journal"],
-              ["Request a quote", "/request-a-quote"],
-              ["Spaces: Podcast", "/podcast-studio-lighting-nairobi"],
-              ["Spaces: Students", "/study-lamps-nairobi"],
-              ["Spaces: Offices", "/office-lighting-nairobi"],
-              ["About", "/about"],
-              ["Contact", "/contact"],
-            ].map(([label, href]) => (
-              <li key={href}>
-                <Link href={href} className="hover:text-paper transition-colors">
-                  {label}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <p className="label text-paper/50 mb-4">Visit & Contact</p>
-          <ul className="space-y-2.5 text-sm text-paper/80">
+          <p className="text-[0.55rem] sm:text-[0.65rem] tracking-[0.14em] uppercase text-paper/50 mb-3">
+            Visit & Contact
+          </p>
+          <ul className="space-y-2 text-xs sm:text-sm text-paper/80">
             <li>{SITE.address}</li>
             <li>{SITE.hours}</li>
             <li>
@@ -102,7 +111,7 @@ export function Footer() {
               </a>
             </li>
           </ul>
-          <div className="flex gap-4 mt-5 label text-paper/50">
+          <div className="flex gap-4 mt-5 text-[0.55rem] sm:text-[0.65rem] tracking-[0.14em] uppercase text-paper/50">
             <a href="#" className="hover:text-paper">
               Instagram
             </a>
@@ -117,7 +126,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-paper/10">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex flex-wrap gap-x-5 gap-y-2 items-center label text-paper/45">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-wrap gap-x-5 gap-y-2 items-center text-[0.55rem] sm:text-[0.65rem] tracking-[0.12em] uppercase text-paper/45">
           <span>We deliver & install in</span>
           <Link href="/delivery/nairobi" className="hover:text-paper">
             Nairobi
@@ -132,7 +141,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-paper/10">
-        <div className="mx-auto max-w-7xl px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[0.65rem] tracking-[0.12em] uppercase text-paper/40">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[0.6rem] tracking-[0.12em] uppercase text-paper/40">
           <p>© 2026 Sparklights 254. All rights reserved.</p>
           <p className="flex flex-wrap gap-x-3 gap-y-1">
             <span>M-Pesa · Visa · Mastercard</span>

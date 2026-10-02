@@ -39,26 +39,26 @@ export function IntentCards() {
             </p>
           </div>
         </Reveal>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {intents.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="group relative overflow-hidden border border-line rounded-md min-h-[220px] sm:min-h-[280px] flex flex-col justify-end"
+              className="group relative overflow-hidden border border-line rounded-md min-h-[160px] sm:min-h-[280px] flex flex-col justify-end"
             >
               <Image
                 src={item.image}
                 alt={item.title}
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                sizes="(max-width:640px) 100vw, 33vw"
+                sizes="33vw"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/35 to-ink/10" />
-              <div className="relative p-5 sm:p-8">
-                <h3 className="font-serif text-2xl sm:text-3xl text-paper leading-snug mb-3">
+              <div className="relative p-3 sm:p-8">
+                <h3 className="font-serif text-sm sm:text-3xl text-paper leading-snug mb-2 sm:mb-3">
                   {item.title}
                 </h3>
-                <span className="label text-paper/80 tracking-[0.14em]">
+                <span className="label text-[0.55rem] sm:text-[0.6875rem] text-paper/80 tracking-[0.1em] sm:tracking-[0.14em]">
                   {item.cta} →
                 </span>
               </div>
