@@ -15,7 +15,7 @@ export const PLACEHOLDER_IMAGES = {
   crystal: "/images/products/6500.jpeg",
   black: "/images/products/2999.jpeg",
   glow: "/images/products/round1.jpg",
-  room: "/images/products/roomm3.jpeg",
+  room: "/images/products/roomm3.jpg",
   office: "/images/products/3000.jpeg",
   map: "/images/products/Screenshot_20251008_135721_1.jpg",
 } as const;

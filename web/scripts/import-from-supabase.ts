@@ -5,11 +5,11 @@
  * Usage:
  *   SUPABASE_URL=... SUPABASE_SERVICE_ROLE_KEY=... npx tsx scripts/import-from-supabase.ts
  */
-import { createWriteStream, existsSync, mkdirSync } from "fs";
+import { existsSync, mkdirSync } from "fs";
 import { basename, extname, join } from "path";
-import { pipeline } from "stream/promises";
-import { Readable } from "stream";
 import { PrismaClient, Prisma } from "@prisma/client";
+import { compressImageBuffer } from "../src/lib/image-compress";
+import { writeFile } from "fs/promises";
 
 const SUPABASE_URL = (process.env.SUPABASE_URL || "").replace(/\/$/, "");
 const SUPABASE_KEY =
@@ -183,20 +183,22 @@ function safeFilename(urlOrPath: string, productSlug: string, index: number): st
   if (!base || base === "/" || base === ".") {
     base = `${productSlug}-${index}.jpg`;
   }
-  const ext = extname(base) || ".jpg";
-  const stem = basename(base, ext).slice(0, 60) || productSlug;
-  return `${productSlug}-${index}-${stem}${ext.toLowerCase()}`;
+  const stem = basename(base, extname(base)).slice(0, 60) || productSlug;
+  // Always .jpg after compression
+  return `${productSlug}-${index}-${stem}.jpg`;
 }
 
 async function downloadTo(url: string, dest: string): Promise<boolean> {
   if (existsSync(dest)) return true;
   try {
     const res = await fetch(url, { redirect: "follow" });
-    if (!res.ok || !res.body) {
+    if (!res.ok) {
       console.warn(`  skip download ${res.status}: ${url.slice(0, 100)}`);
       return false;
     }
-    await pipeline(Readable.fromWeb(res.body as never), createWriteStream(dest));
+    const raw = Buffer.from(await res.arrayBuffer());
+    const { buffer } = await compressImageBuffer(raw, { maxEdge: 1200, quality: 80 });
+    await writeFile(dest, buffer);
     return true;
   } catch (e) {
     console.warn(`  download error: ${(e as Error).message} — ${url.slice(0, 100)}`);

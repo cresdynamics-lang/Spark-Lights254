@@ -65,11 +65,11 @@ export function Navbar() {
         }`}
       >
         <div
-          className={`mx-auto max-w-7xl px-4 sm:px-5 md:px-8 flex items-center justify-between gap-3 transition-all duration-500 ${
-            compact ? "h-16 sm:h-[4.5rem]" : "h-[4.75rem] sm:h-24 md:h-28"
+          className={`mx-auto max-w-7xl px-4 sm:px-5 md:px-8 flex items-center justify-between gap-3 transition-all duration-300 ${
+            compact ? "h-14 sm:h-16" : "h-16 sm:h-[4.25rem]"
           }`}
         >
-          <BrandLogo size={compact ? "md" : "xl"} compact={compact} priority />
+          <BrandLogo size="md" compact priority />
 
           <nav className="hidden lg:flex items-center gap-1">
             <div
@@ -300,7 +300,7 @@ export function Navbar() {
         {mobileOpen ? (
           <div className="lg:hidden absolute left-0 right-0 top-full z-[60] border-b border-line bg-paper shadow-[0_12px_40px_rgba(0,0,0,0.08)] max-h-[min(78vh,640px)] overflow-y-auto">
             <div className="px-4 pt-4 pb-2 border-b border-line">
-              <BrandLogo size="lg" />
+              <BrandLogo size="md" />
             </div>
             <nav className="px-4 py-2">
               <Link

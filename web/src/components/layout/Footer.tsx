@@ -8,7 +8,7 @@ export function Footer() {
     <footer className="bg-ink text-paper">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 sm:py-16 grid gap-10 md:grid-cols-[1.2fr_1.8fr] lg:grid-cols-[1.1fr_2fr_1fr]">
         <div className="space-y-5">
-          <BrandLogo size="xl" onDark />
+          <BrandLogo size="md" onDark />
           <p className="text-sm text-paper/70 leading-relaxed">
             Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Delivered
             fast. Installed properly.

@@ -3,8 +3,8 @@ import Link from "next/link";
 import { SITE } from "@/lib/constants";
 
 type BrandLogoProps = {
-  /** Larger mark for header / footer brand presence */
-  size?: "md" | "lg" | "xl";
+  /** Fixed display size — never changes on scroll */
+  size?: "sm" | "md";
   /** Show wordmark beside the mark */
   withWordmark?: boolean;
   /** Compact mode hides subtitle */
@@ -15,14 +15,14 @@ type BrandLogoProps = {
   priority?: boolean;
 };
 
+/** Consistent small mark everywhere — no enlarge/shrink on scroll. */
 const SIZES = {
-  md: "h-12 w-12 sm:h-14 sm:w-14",
-  lg: "h-16 w-16 sm:h-20 sm:w-20 md:h-24 md:w-24",
-  xl: "h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28",
+  sm: "h-9 w-9",
+  md: "h-10 w-10 sm:h-11 sm:w-11",
 } as const;
 
 export function BrandLogo({
-  size = "lg",
+  size = "md",
   withWordmark = true,
   compact = false,
   onDark = false,
@@ -36,7 +36,7 @@ export function BrandLogo({
   return (
     <Link
       href="/"
-      className={`inline-flex items-center gap-3 sm:gap-4 min-w-0 ${className}`}
+      className={`inline-flex items-center gap-2.5 sm:gap-3 min-w-0 ${className}`}
       aria-label={`${SITE.fullName} home`}
     >
       <span
@@ -49,20 +49,20 @@ export function BrandLogo({
           alt={`${SITE.fullName} logo`}
           fill
           className="object-cover"
-          sizes="(max-width:640px) 80px, 112px"
+          sizes="44px"
           priority={priority}
         />
       </span>
       {withWordmark ? (
         <span className="min-w-0">
           <span
-            className={`font-serif tracking-[0.1em] sm:tracking-[0.12em] uppercase block leading-none ${nameCls} text-lg sm:text-xl md:text-2xl`}
+            className={`font-serif tracking-[0.1em] sm:tracking-[0.12em] uppercase block leading-none ${nameCls} text-base sm:text-lg`}
           >
             {SITE.name}
           </span>
           {!compact ? (
             <span
-              className={`label mt-1.5 block tracking-[0.16em] sm:tracking-[0.2em] text-[0.6rem] sm:text-[0.6875rem] ${subCls}`}
+              className={`label mt-1 block tracking-[0.16em] text-[0.55rem] sm:text-[0.6rem] ${subCls}`}
             >
               {SITE.tagline}
             </span>

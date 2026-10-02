@@ -10,7 +10,7 @@ import { productOrderMessage } from "@/lib/whatsapp-order";
 import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
-  const images = [product.image, product.hoverImage, "/images/products/roomm3.jpeg"].filter(
+  const images = [product.image, product.hoverImage, "/images/products/roomm3.jpg"].filter(
     Boolean
   ) as string[];
   const [active, setActive] = useState(0);

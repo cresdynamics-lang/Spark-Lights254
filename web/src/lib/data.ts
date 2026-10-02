@@ -632,7 +632,7 @@ export const rooms: Room[] = [
     headline: "Dining Room Lighting in Nairobi",
     description:
       "The light over your table sets the mood of every meal. Chandeliers and pendants chosen for how they look and how they feel.",
-    image: "/images/products/roomm3.jpeg",
+    image: "/images/products/roomm3.jpg",
     chooseBy: [
       {
         title: "Round or small tables",

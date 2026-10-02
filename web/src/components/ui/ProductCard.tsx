@@ -19,8 +19,9 @@ export function ProductCard({
           alt={product.name}
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
-          sizes="(max-width: 768px) 50vw, 25vw"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
           loading="lazy"
+          quality={70}
         />
         {product.hoverImage ? (
           <Image
@@ -28,8 +29,9 @@ export function ProductCard({
             alt=""
             fill
             className="secondary object-cover"
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
             loading="lazy"
+            quality={70}
           />
         ) : null}
         {badge ? (
