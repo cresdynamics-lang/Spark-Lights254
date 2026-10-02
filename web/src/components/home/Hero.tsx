@@ -2,14 +2,64 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button, WhatsAppButton } from "@/components/ui/Button";
 import { DELIVERY_AREAS } from "@/lib/constants";
+import { catalogProducts } from "@/lib/catalog";
+import { HeroFeaturedRotator } from "@/components/home/HeroFeaturedRotator";
 
-export function Hero() {
+const FEATURE_CATEGORIES = [
+  "ceiling-lights",
+  "wall-lights",
+  "chandeliers",
+  "pendant-lights",
+  "bedroom",
+  "outdoor-solar",
+];
+
+async function featuredForHero() {
+  const all = await catalogProducts();
+  const picks: typeof all = [];
+  const used = new Set<string>();
+
+  for (const cat of FEATURE_CATEGORIES) {
+    const match = all.find(
+      (p) =>
+        !used.has(p.slug) &&
+        (p.category === cat ||
+          p.rooms?.includes(cat) ||
+          p.type.toLowerCase().includes(cat.split("-")[0])),
+    );
+    if (match) {
+      picks.push(match);
+      used.add(match.slug);
+    }
+  }
+
+  // Fill from remaining catalogue so we always rotate several pieces
+  for (const p of all) {
+    if (picks.length >= 8) break;
+    if (used.has(p.slug)) continue;
+    picks.push(p);
+    used.add(p.slug);
+  }
+
+  return picks.slice(0, 8).map((p) => ({
+    slug: p.slug,
+    name: p.name,
+    price: p.price,
+    image: p.image,
+    category: p.category,
+    type: p.type,
+  }));
+}
+
+export async function Hero() {
+  const featured = await featuredForHero();
+
   return (
     <section className="relative bg-ink text-paper overflow-hidden">
       <div className="absolute inset-0">
         <Image
           src="/images/products/Screenshot_2025_1008_135432.jpeg"
-          alt="Cadence wall light — Signature"
+          alt="Sparklights featured lighting"
           fill
           priority
           className="object-cover object-[center_30%] sm:object-center opacity-90"
@@ -18,7 +68,8 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/50 to-ink/85 sm:bg-gradient-to-r sm:from-ink sm:via-ink/80 sm:to-ink/25" />
       </div>
 
-      {/* Content sits high on phones so the headline is visible and sections below rise */}
+      <HeroFeaturedRotator products={featured} />
+
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 md:px-8 pt-10 sm:pt-24 md:pt-32 pb-10 sm:pb-28 flex flex-col justify-start sm:justify-end min-h-[58vh] sm:min-h-[88vh]">
         <p className="label text-paper/60 mb-2.5 sm:mb-5 tracking-[0.16em] sm:tracking-[0.2em] text-[0.6rem] sm:text-[0.6875rem]">
           Lighting studio · Nairobi
@@ -30,7 +81,7 @@ export function Hero() {
           Chandeliers, wall lights and statement ceiling lights, delivered across Kenya and
           installed by people who care how it looks.
         </p>
-        <div className="flex flex-row gap-2 sm:gap-3 mb-6 sm:mb-14 w-full">
+        <div className="flex flex-row gap-2 sm:gap-3 mb-6 sm:mb-14 w-full max-w-xl">
           <Button
             href="/collection"
             className="!bg-white !text-black !border-white hover:!bg-mist flex-1 sm:flex-none justify-center px-3 sm:px-6 text-[0.58rem] sm:text-[0.6875rem] whitespace-nowrap"

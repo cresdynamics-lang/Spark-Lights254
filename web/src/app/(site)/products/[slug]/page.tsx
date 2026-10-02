@@ -1,29 +1,42 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { formatPrice } from "@/lib/data";
 import {
-  products,
-  getProduct,
-  formatPrice,
-  products as allProducts,
-} from "@/lib/data";
+  catalogProduct,
+  catalogProducts,
+  catalogProductsByCategory,
+  catalogCategory,
+} from "@/lib/catalog";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ProductBuyPanel } from "@/components/product/ProductBuyPanel";
 import { MetaViewContent } from "@/components/analytics/MetaViewContent";
 import type { Metadata } from "next";
-import { getCategory } from "@/lib/data";
 import { SITE } from "@/lib/constants";
 import { JsonLd, productSchema, breadcrumbSchema } from "@/components/seo/JsonLd";
+import { prisma } from "@/lib/db";
 
 type Props = { params: Promise<{ slug: string }> };
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
+  try {
+    const rows = await prisma.product.findMany({
+      where: { published: true },
+      select: { slug: true },
+    });
+    if (rows.length) return rows.map((p) => ({ slug: p.slug }));
+  } catch {
+    /* fall through */
+  }
+  const all = await catalogProducts();
+  return all.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await catalogProduct(slug);
   if (!product) return {};
   const title = `${product.name} | Nairobi`.slice(0, 60);
   const description = product.description.slice(0, 155);
@@ -62,12 +75,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const product = getProduct(slug);
+  const product = await catalogProduct(slug);
   if (!product) notFound();
 
-  const cat = getCategory(product.category);
-  const related = allProducts
-    .filter((p) => p.category === product.category && p.slug !== product.slug)
+  const cat = await catalogCategory(product.category);
+  const related = (await catalogProductsByCategory(product.category))
+    .filter((p) => p.slug !== product.slug)
     .slice(0, 4);
 
   return (

@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/constants";
 import { SEO_INVENTORY } from "@/lib/seo-inventory";
 import { prisma } from "@/lib/db";
-import { products } from "@/lib/data";
+import { products as staticProducts } from "@/lib/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -18,7 +18,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         url: `${SITE.url}${p.path === "/" ? "" : p.path}`,
         lastModified: p.lastModified,
         changeFrequency: p.family === "journal" ? "weekly" : "weekly",
-        priority: p.path === "/" ? 1 : p.family === "audience" || p.family === "category" ? 0.9 : 0.7,
+        priority:
+          p.path === "/"
+            ? 1
+            : p.family === "audience" || p.family === "category"
+              ? 0.9
+              : 0.7,
       });
     }
   } catch {
@@ -32,17 +37,61 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Products always included when published in static/DB catalogue
-  for (const p of products) {
-    entries.push({
-      url: `${SITE.url}/products/${p.slug}`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.6,
+  // All published catalogue products (DB first — unique name-based slugs)
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true, name: true },
+      orderBy: { updatedAt: "desc" },
     });
+    if (dbProducts.length) {
+      for (const p of dbProducts) {
+        entries.push({
+          url: `${SITE.url}/products/${p.slug}`,
+          lastModified: p.updatedAt,
+          changeFrequency: "daily",
+          priority: 0.8,
+        });
+      }
+    } else {
+      for (const p of staticProducts) {
+        entries.push({
+          url: `${SITE.url}/products/${p.slug}`,
+          lastModified: now,
+          changeFrequency: "weekly",
+          priority: 0.8,
+        });
+      }
+    }
+  } catch {
+    for (const p of staticProducts) {
+      entries.push({
+        url: `${SITE.url}/products/${p.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
   }
 
-  // Dedupe by URL
+  // Published journal posts
+  try {
+    const blogs = await prisma.blog.findMany({
+      where: { published: true },
+      select: { slug: true, updatedAt: true },
+    });
+    for (const b of blogs) {
+      entries.push({
+        url: `${SITE.url}/journal/${b.slug}`,
+        lastModified: b.updatedAt,
+        changeFrequency: "weekly",
+        priority: 0.7,
+      });
+    }
+  } catch {
+    /* ignore */
+  }
+
   const seen = new Set<string>();
   return entries.filter((e) => {
     if (seen.has(e.url)) return false;
