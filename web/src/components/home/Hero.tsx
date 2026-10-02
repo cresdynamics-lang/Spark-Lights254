@@ -8,7 +8,7 @@ export function Hero() {
     <section className="relative bg-ink text-paper overflow-hidden">
       <div className="absolute inset-0">
         <Image
-          src="/images/products/Screenshot_2025_1008_135432.png"
+          src="/images/products/Screenshot_2025_1008_135432.jpeg"
           alt="Cadence wall light — Signature"
           fill
           priority

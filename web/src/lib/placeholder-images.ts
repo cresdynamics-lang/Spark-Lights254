@@ -3,7 +3,7 @@
  * Prefer these over empty boxes so the UI never looks unfinished.
  */
 export const PLACEHOLDER_IMAGES = {
-  showroom: "/images/products/Screenshot_2025_1008_135432.png",
+  showroom: "/images/products/Screenshot_2025_1008_135432.jpeg",
   dining: "/images/products/7500.jpeg",
   bedroom: "/images/products/round2.jpg",
   kitchen: "/images/products/5500.jpeg",
@@ -15,7 +15,7 @@ export const PLACEHOLDER_IMAGES = {
   crystal: "/images/products/6500.jpeg",
   black: "/images/products/2999.jpeg",
   glow: "/images/products/round1.jpg",
-  room: "/images/products/roomm3.png",
+  room: "/images/products/roomm3.jpeg",
   office: "/images/products/3000.jpeg",
   map: "/images/products/Screenshot_20251008_135721_1.jpg",
 } as const;

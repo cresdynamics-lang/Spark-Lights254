@@ -61,7 +61,7 @@ export function WarmOrCool() {
         </div>
         <div className="relative aspect-[4/5] border border-line overflow-hidden rounded-md bg-mist">
           <Image
-            src="/images/products/Screenshot_2025_1008_135432.png"
+            src="/images/products/Screenshot_2025_1008_135432.jpeg"
             alt="Room lighting colour temperature demonstration"
             fill
             className="object-cover transition-[filter] duration-300"

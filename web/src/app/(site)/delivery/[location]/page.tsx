@@ -91,7 +91,7 @@ export default async function LocationPage({ params }: Props) {
           <h2 className="font-serif text-4xl mb-8">Lights we&apos;ve delivered nearby</h2>
           <div className="relative aspect-[16/9] max-w-3xl border border-line overflow-hidden bg-mist">
             <Image
-              src="/images/products/roomm3.png"
+              src="/images/products/roomm3.jpeg"
               alt={`Project in ${loc.name}`}
               fill
               className="object-cover"

@@ -2,7 +2,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, type Product } from "@/lib/data";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  badgeOverride,
+}: {
+  product: Product;
+  badgeOverride?: string;
+}) {
+  const badge = badgeOverride ?? product.badge;
+
   return (
     <Link href={`/products/${product.slug}`} className="product-card group block">
       <div className="product-card-image relative aspect-[4/5] bg-mist overflow-hidden border border-line rounded-md">
@@ -12,6 +20,7 @@ export function ProductCard({ product }: { product: Product }) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-[1.02]"
           sizes="(max-width: 768px) 50vw, 25vw"
+          loading="lazy"
         />
         {product.hoverImage ? (
           <Image
@@ -20,11 +29,12 @@ export function ProductCard({ product }: { product: Product }) {
             fill
             className="secondary object-cover"
             sizes="(max-width: 768px) 50vw, 25vw"
+            loading="lazy"
           />
         ) : null}
-        {product.badge ? (
+        {badge ? (
           <span className="absolute top-3 left-3 label text-ink bg-paper/90 px-2 py-1">
-            {product.badge}
+            {badge}
           </span>
         ) : null}
       </div>

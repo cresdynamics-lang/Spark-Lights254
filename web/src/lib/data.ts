@@ -632,7 +632,7 @@ export const rooms: Room[] = [
     headline: "Dining Room Lighting in Nairobi",
     description:
       "The light over your table sets the mood of every meal. Chandeliers and pendants chosen for how they look and how they feel.",
-    image: "/images/products/roomm3.png",
+    image: "/images/products/roomm3.jpeg",
     chooseBy: [
       {
         title: "Round or small tables",
@@ -1233,6 +1233,16 @@ export function productsByStyle(styleSlug: string) {
 
 export function signatureProducts() {
   return products.filter((p) => p.signature || p.badge === "Signature");
+}
+
+/** Best sellers — shown on /sale */
+export function saleProducts() {
+  return products.filter((p) => p.badge === "Popular");
+}
+
+/** New arrivals — shown on /new-arrivals */
+export function newArrivalProducts() {
+  return products.filter((p) => p.badge === "New");
 }
 
 export function featuredProducts() {

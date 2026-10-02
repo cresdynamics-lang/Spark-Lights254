@@ -40,6 +40,8 @@ export function Navbar() {
   const projectsActive = pathname.startsWith("/projects");
   const aboutActive = pathname.startsWith("/about");
   const signatureActive = pathname.startsWith("/signature");
+  const saleActive = pathname.startsWith("/sale");
+  const newActive = pathname.startsWith("/new-arrivals");
 
   const navBtn = (active: boolean, open?: boolean) =>
     `relative text-[0.6875rem] tracking-[0.16em] uppercase px-3 py-2 rounded-full transition-all duration-300 ${
@@ -106,6 +108,12 @@ export function Navbar() {
             </div>
             <Link href="/signature" className={navBtn(signatureActive)}>
               Signature
+            </Link>
+            <Link href="/new-arrivals" className={navBtn(newActive)}>
+              New
+            </Link>
+            <Link href="/sale" className={navBtn(saleActive)}>
+              Sale
             </Link>
             <Link href="/projects" className={navBtn(projectsActive)}>
               Projects
@@ -227,6 +235,15 @@ export function Navbar() {
                 </div>
               </div>
               <div className="col-span-5">
+                <p className="label mb-4">Quick shop</p>
+                <div className="grid grid-cols-2 gap-2 text-sm mb-6">
+                  <Link href="/sale" className="font-serif text-xl text-ink hover:text-mute py-1">
+                    Sale
+                  </Link>
+                  <Link href="/new-arrivals" className="font-serif text-xl text-ink hover:text-mute py-1">
+                    New arrivals
+                  </Link>
+                </div>
                 <p className="label mb-4">By space / audience</p>
                 <div className="grid grid-cols-2 gap-2 text-sm">
                   {[
@@ -310,6 +327,8 @@ export function Navbar() {
               { href: "/shop/chandeliers", label: "Shop" },
               { href: "/rooms/dining-room", label: "Rooms" },
               { href: "/signature", label: "Signature" },
+              { href: "/new-arrivals", label: "New arrivals" },
+              { href: "/sale", label: "Sale" },
               { href: "/projects", label: "Projects" },
               { href: "/delivery", label: "Delivery" },
               { href: "/about", label: "About" },

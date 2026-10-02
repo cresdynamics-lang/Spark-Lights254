@@ -220,6 +220,30 @@ const rows: SeoInventoryRow[] = [
     indexable: true,
     published: true,
   },
+  {
+    path: "/sale",
+    title: "Sale Lighting Nairobi | Best Sellers",
+    description:
+      "Best-selling chandeliers, wall lights and ceiling lights on sale. Delivered across Nairobi. Order on WhatsApp.",
+    h1: "Best sellers, ready to order.",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/",
+    indexable: true,
+    published: true,
+  },
+  {
+    path: "/new-arrivals",
+    title: "New Arrivals Lighting Nairobi | Sparklights",
+    description:
+      "Newly arrived lights for dining rooms, bedrooms and feature walls. Shop new stock in Nairobi on WhatsApp.",
+    h1: "New arrivals",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/",
+    indexable: true,
+    published: true,
+  },
   // Audience
   {
     path: "/podcast-studio-lighting-nairobi",

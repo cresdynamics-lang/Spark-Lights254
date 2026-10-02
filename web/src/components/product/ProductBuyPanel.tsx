@@ -8,7 +8,7 @@ import { WhatsAppButton } from "@/components/ui/Button";
 import { whatsappUrl } from "@/lib/constants";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
-  const images = [product.image, product.hoverImage, "/images/products/roomm3.png"].filter(
+  const images = [product.image, product.hoverImage, "/images/products/roomm3.jpeg"].filter(
     Boolean
   ) as string[];
   const [active, setActive] = useState(0);

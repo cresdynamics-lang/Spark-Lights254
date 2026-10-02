@@ -2,19 +2,27 @@ import Link from "next/link";
 
 export function Breadcrumbs({
   items,
+  light = false,
 }: {
   items: { label: string; href?: string }[];
+  light?: boolean;
 }) {
   return (
-    <nav aria-label="Breadcrumb" className="label mb-6 flex flex-wrap gap-2">
+    <nav
+      aria-label="Breadcrumb"
+      className={`label mb-6 flex flex-wrap gap-2 ${light ? "text-paper/55" : ""}`}
+    >
       {items.map((item, i) => (
         <span key={`${item.label}-${i}`} className="flex items-center gap-2">
           {item.href ? (
-            <Link href={item.href} className="hover:text-ink transition-colors">
+            <Link
+              href={item.href}
+              className={light ? "hover:text-paper transition-colors" : "hover:text-ink transition-colors"}
+            >
               {item.label}
             </Link>
           ) : (
-            <span className="text-ink">{item.label}</span>
+            <span className={light ? "text-paper/80" : "text-ink"}>{item.label}</span>
           )}
           {i < items.length - 1 ? <span>/</span> : null}
         </span>
