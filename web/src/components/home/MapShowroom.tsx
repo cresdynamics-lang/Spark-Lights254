@@ -1,5 +1,7 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SITE, DELIVERY_AREAS } from "@/lib/constants";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholder-images";
 import { Reveal } from "@/components/ui/Reveal";
 
 const pins = [
@@ -24,8 +26,16 @@ export function MapShowroom() {
             className="relative aspect-[5/4] border border-line bg-paper rounded-md overflow-hidden mb-4"
             aria-label="Delivery areas map of Nairobi"
           >
+            <Image
+              src={PLACEHOLDER_IMAGES.map}
+              alt="Nairobi delivery coverage — product photography placeholder"
+              fill
+              className="object-cover opacity-40"
+              sizes="(max-width:1024px) 100vw, 50vw"
+            />
+            <div className="absolute inset-0 bg-paper/55" />
             <div
-              className="absolute inset-0 opacity-[0.07]"
+              className="absolute inset-0 opacity-[0.12]"
               style={{
                 backgroundImage:
                   "linear-gradient(var(--ink) 1px, transparent 1px), linear-gradient(90deg, var(--ink) 1px, transparent 1px)",
@@ -38,7 +48,7 @@ export function MapShowroom() {
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="0.4"
-                className="text-ink/30"
+                className="text-ink/40"
               />
             </svg>
             {pins.map((p) => (
@@ -59,53 +69,62 @@ export function MapShowroom() {
                 </span>
               </Link>
             ))}
-            <p className="absolute bottom-3 left-3 label text-mute">Nairobi delivery map</p>
+            <p className="absolute bottom-3 left-3 label text-ink/70">Nairobi delivery map</p>
           </div>
           <Link href="/delivery/nairobi" className="label border-b border-ink/30 pb-1">
             Lighting delivery in Nairobi →
           </Link>
         </Reveal>
 
-        <div className="border border-line bg-paper rounded-md p-6 sm:p-8 flex flex-col justify-between">
-          <div>
-            <p className="label mb-3">Showroom</p>
-            <h3 className="font-serif text-3xl mb-4">Visit Sparklights 254</h3>
-            <p className="text-mute leading-relaxed mb-2">{SITE.address}</p>
-            <p className="text-mute mb-2">{SITE.hours}</p>
-            <p className="text-mute mb-6">
-              <a href={`tel:${SITE.phoneTel}`} className="hover:text-ink">
-                {SITE.phoneDisplay}
-              </a>
-            </p>
-            <p className="text-xs text-mute border border-line bg-mist p-3 rounded-md mb-6">
-              PLACEHOLDER — embed Google Map once coordinates are confirmed. Parking notes: TODO.
-            </p>
-            <p className="label mb-3">We deliver to</p>
-            <div className="flex flex-wrap gap-2 mb-6">
-              {DELIVERY_AREAS.map((a) => (
-                <Link
-                  key={a.slug}
-                  href={`/delivery/${a.slug}`}
-                  className="label border border-line px-3 py-1.5 rounded-full hover:bg-mist"
-                >
-                  {a.name}
-                </Link>
-              ))}
-            </div>
+        <div className="border border-line bg-paper rounded-md overflow-hidden flex flex-col">
+          <div className="relative aspect-[16/10]">
+            <Image
+              src={PLACEHOLDER_IMAGES.showroom}
+              alt="Sparklights showroom — sample lit fixture"
+              fill
+              className="object-cover"
+              sizes="(max-width:1024px) 100vw, 50vw"
+            />
+            <p className="absolute bottom-3 left-3 label text-paper drop-shadow">Showroom preview</p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              href="/showroom"
-              className="bg-ink text-paper px-5 py-3 rounded-full label tracking-[0.14em]"
-            >
-              Showroom details
-            </Link>
-            <Link
-              href="/delivery"
-              className="border border-ink px-5 py-3 rounded-full label tracking-[0.14em]"
-            >
-              Delivery areas
-            </Link>
+          <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
+            <div>
+              <p className="label mb-3">Showroom</p>
+              <h3 className="font-serif text-3xl mb-4">Visit Sparklights 254</h3>
+              <p className="text-mute leading-relaxed mb-2">{SITE.address}</p>
+              <p className="text-mute mb-2">{SITE.hours}</p>
+              <p className="text-mute mb-6">
+                <a href={`tel:${SITE.phoneTel}`} className="hover:text-ink">
+                  {SITE.phoneDisplay}
+                </a>
+              </p>
+              <p className="label mb-3">We deliver to</p>
+              <div className="flex flex-wrap gap-2 mb-6">
+                {DELIVERY_AREAS.map((a) => (
+                  <Link
+                    key={a.slug}
+                    href={`/delivery/${a.slug}`}
+                    className="label border border-line px-3 py-1.5 rounded-full hover:bg-mist"
+                  >
+                    {a.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <Link
+                href="/showroom"
+                className="bg-ink text-paper px-5 py-3 rounded-full label tracking-[0.14em]"
+              >
+                Showroom details
+              </Link>
+              <Link
+                href="/delivery"
+                className="border border-ink px-5 py-3 rounded-full label tracking-[0.14em]"
+              >
+                Delivery areas
+              </Link>
+            </div>
           </div>
         </div>
       </div>

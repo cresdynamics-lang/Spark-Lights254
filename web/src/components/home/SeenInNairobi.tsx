@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholder-images";
 
 type Job = {
   area: string;
@@ -10,7 +11,6 @@ type Job = {
   href: string;
   image: string;
   before?: string;
-  note: string;
 };
 
 const jobs: Job[] = [
@@ -18,41 +18,36 @@ const jobs: Job[] = [
     area: "Kilimani",
     room: "Dining",
     href: "/delivery/kilimani",
-    image: "/images/products/7500.jpeg",
-    before: "/images/products/6000.jpeg",
-    note: "PLACEHOLDER project photo — replace with real Kilimani install.",
+    image: PLACEHOLDER_IMAGES.dining,
+    before: PLACEHOLDER_IMAGES.ceiling,
   },
   {
     area: "Kileleshwa",
     room: "Bedroom",
     href: "/delivery/kileleshwa",
-    image: "/images/products/round2.jpg",
-    note: "PLACEHOLDER — real job photo pending.",
+    image: PLACEHOLDER_IMAGES.bedroom,
   },
   {
     area: "Gigiri",
     room: "Entrance",
     href: "/delivery/gigiri",
-    image: "/images/products/7000.jpeg",
-    note: "PLACEHOLDER — real job photo pending.",
+    image: PLACEHOLDER_IMAGES.entrance,
   },
   {
     area: "Kitengela",
     room: "Kitchen",
     href: "/delivery/kitengela",
-    image: "/images/products/5500.jpeg",
-    note: "PLACEHOLDER — real job photo pending.",
+    image: PLACEHOLDER_IMAGES.kitchen,
   },
   {
     area: "Rongai",
     room: "Outdoor",
     href: "/delivery/rongai",
-    image: "/images/products/3999.jpeg",
-    note: "PLACEHOLDER — real job photo pending.",
+    image: PLACEHOLDER_IMAGES.outdoor,
   },
 ];
 
-const featuredBefore = "/images/products/6000.jpeg";
+const featuredBefore = PLACEHOLDER_IMAGES.ceiling;
 
 export function SeenInNairobi() {
   const [pos, setPos] = useState(55);
@@ -73,7 +68,7 @@ export function SeenInNairobi() {
           Kilimani. Kileleshwa. Gigiri. Kitengela. Rongai. See what we fitted.
         </h2>
         <p className="text-mute mb-8 max-w-2xl">
-          Real finished jobs with the area named. PLACEHOLDER imagery until client supplies originals.
+          Finished looks by area — using our product photography until install photos are supplied.
         </p>
 
         <div
@@ -120,15 +115,13 @@ export function SeenInNairobi() {
             Before · After · {featured.area}
           </p>
         </div>
-        <p className="text-xs text-mute mb-8">{featured.note}</p>
-
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-8">
           {jobs.slice(1).map((j) => (
             <Link key={j.area} href={j.href} className="group">
               <div className="relative aspect-[4/5] border border-line rounded-md overflow-hidden mb-2">
                 <Image
                   src={j.image}
-                  alt={`${j.area} ${j.room} lighting — PLACEHOLDER`}
+                  alt={`${j.area} ${j.room} lighting`}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   loading="lazy"

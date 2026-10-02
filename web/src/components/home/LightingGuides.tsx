@@ -1,13 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { listPublishedBlogs } from "@/lib/blogs";
+import { PRODUCT_IMAGE_POOL } from "@/lib/placeholder-images";
 import { Reveal } from "@/components/ui/Reveal";
-
-const FALLBACK_IMAGES = [
-  "/images/products/7500.jpeg",
-  "/images/products/3500.jpeg",
-  "/images/products/Screenshot_2025_1008_135432.png",
-];
 
 export async function LightingGuides() {
   const posts = await listPublishedBlogs();
@@ -34,8 +29,8 @@ export async function LightingGuides() {
             >
               <div className="relative aspect-[16/10] bg-mist">
                 <Image
-                  src={p.image || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length]}
-                  alt=""
+                  src={p.image || PRODUCT_IMAGE_POOL[i % PRODUCT_IMAGE_POOL.length]}
+                  alt={p.title}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
                   sizes="(max-width:640px) 100vw, 33vw"

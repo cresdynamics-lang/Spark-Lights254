@@ -1,4 +1,6 @@
+import Image from "next/image";
 import { SITE, whatsappUrl } from "@/lib/constants";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholder-images";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { Button } from "@/components/ui/Button";
 import type { Metadata } from "next";
@@ -98,8 +100,17 @@ export default function ContactPage() {
               </li>
               <li>{SITE.hours}</li>
             </ul>
-            <div className="aspect-[4/3] bg-paper border border-line flex items-center justify-center label">
-              Map placeholder
+            <div className="relative aspect-[4/3] border border-line overflow-hidden rounded-md">
+              <Image
+                src={PLACEHOLDER_IMAGES.showroom}
+                alt="Sparklights showroom lighting — sample product photo"
+                fill
+                className="object-cover"
+                sizes="(max-width:768px) 100vw, 40vw"
+              />
+              <p className="absolute bottom-3 left-3 label text-paper drop-shadow">
+                Showroom · Duruma Road
+              </p>
             </div>
           </aside>
         </div>

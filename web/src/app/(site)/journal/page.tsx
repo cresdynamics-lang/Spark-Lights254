@@ -1,6 +1,8 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { listPublishedBlogs } from "@/lib/blogs";
+import { PRODUCT_IMAGE_POOL } from "@/lib/placeholder-images";
 import { seoMetadata } from "@/lib/seo";
 
 export async function generateMetadata() {
@@ -24,6 +26,8 @@ export default async function JournalPage() {
   const journalPosts = await listPublishedBlogs();
   const featured = journalPosts.find((p) => p.featured) || journalPosts[0];
   const rest = journalPosts.filter((p) => p.slug !== featured?.slug);
+  const featuredImage =
+    featured?.image || PRODUCT_IMAGE_POOL[0];
 
   return (
     <>
@@ -56,11 +60,23 @@ export default async function JournalPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10">
             <Link
               href={`/journal/${featured.slug}`}
-              className="block border border-line bg-paper p-6 sm:p-10 rounded-md hover:bg-paper/80 transition-colors"
+              className="grid lg:grid-cols-2 border border-line bg-paper rounded-md overflow-hidden hover:bg-paper/80 transition-colors"
             >
-              <p className="label mb-3">Featured · {featured.topic}</p>
-              <h2 className="font-serif text-3xl sm:text-4xl text-ink mb-3">{featured.title}</h2>
-              <p className="text-mute max-w-2xl">{featured.excerpt}</p>
+              <div className="relative aspect-[16/11] lg:aspect-auto lg:min-h-[320px]">
+                <Image
+                  src={featuredImage}
+                  alt={featured.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width:1024px) 100vw, 50vw"
+                  priority
+                />
+              </div>
+              <div className="p-6 sm:p-10 flex flex-col justify-center">
+                <p className="label mb-3">Featured · {featured.topic}</p>
+                <h2 className="font-serif text-3xl sm:text-4xl text-ink mb-3">{featured.title}</h2>
+                <p className="text-mute max-w-2xl">{featured.excerpt}</p>
+              </div>
             </Link>
           </div>
         </section>
@@ -68,16 +84,28 @@ export default async function JournalPage() {
 
       <section className="bg-paper">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {rest.map((p) => (
+          {rest.map((p, i) => (
             <Link
               key={p.slug}
               href={`/journal/${p.slug}`}
-              className="border border-line p-6 rounded-md hover:bg-mist transition-colors"
+              className="group border border-line rounded-md overflow-hidden hover:bg-mist transition-colors"
             >
-              <p className="label mb-3">
-                {p.topic} · {p.minutes} min
-              </p>
-              <h3 className="font-serif text-2xl text-ink leading-snug">{p.title}</h3>
+              <div className="relative aspect-[16/10] bg-mist">
+                <Image
+                  src={p.image || PRODUCT_IMAGE_POOL[i % PRODUCT_IMAGE_POOL.length]}
+                  alt={p.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width:640px) 100vw, 33vw"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-5">
+                <p className="label mb-3">
+                  {p.topic} · {p.minutes} min
+                </p>
+                <h3 className="font-serif text-2xl text-ink leading-snug">{p.title}</h3>
+              </div>
             </Link>
           ))}
           {journalPosts.length === 0 ? (

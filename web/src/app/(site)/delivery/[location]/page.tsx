@@ -154,8 +154,17 @@ export default async function LocationPage({ params }: Props) {
                 </Link>
               ))}
             </div>
-            <div className="mt-8 h-48 bg-mist border border-line flex items-center justify-center label">
-              Map placeholder
+            <div className="relative mt-8 aspect-[16/9] border border-line overflow-hidden rounded-md">
+              <Image
+                src="/images/products/Screenshot_20251008_135721_1.jpg"
+                alt={`Lighting delivered in ${loc.name}`}
+                fill
+                className="object-cover"
+                sizes="(max-width:768px) 100vw, 50vw"
+              />
+              <p className="absolute bottom-3 left-3 label text-paper drop-shadow">
+                Delivered in {loc.name}
+              </p>
             </div>
           </div>
         </div>

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
@@ -6,6 +7,7 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { products } from "@/lib/data";
 import { getPublishedBlog, listPublishedBlogs, renderBlogBody } from "@/lib/blogs";
 import { staticBlogPosts } from "@/lib/blog-data";
+import { PRODUCT_IMAGE_POOL } from "@/lib/placeholder-images";
 import { seoMetadata } from "@/lib/seo";
 import { JsonLd, articleSchema, breadcrumbSchema } from "@/components/seo/JsonLd";
 
@@ -30,6 +32,7 @@ export default async function JournalArticlePage({ params }: Props) {
   const related = all.filter((p) => p.slug !== slug).slice(0, 2);
   const blocks = renderBlogBody(post.body);
   const updated = new Date().toISOString().slice(0, 10);
+  const heroImage = post.image || PRODUCT_IMAGE_POOL[0];
 
   return (
     <>
@@ -47,6 +50,7 @@ export default async function JournalArticlePage({ params }: Props) {
             datePublished: updated,
             dateModified: updated,
             authorName: post.author,
+            image: heroImage,
           }),
         ]}
       />
@@ -65,6 +69,17 @@ export default async function JournalArticlePage({ params }: Props) {
           <p className="label mb-8">
             By {post.author} · Updated {updated} · {post.minutes} min read
           </p>
+
+          <div className="relative aspect-[16/10] border border-line overflow-hidden rounded-md mb-10">
+            <Image
+              src={heroImage}
+              alt={post.title}
+              fill
+              className="object-cover"
+              sizes="(max-width:768px) 100vw, 768px"
+              priority
+            />
+          </div>
 
           <div className="space-y-6 text-mute leading-relaxed text-base sm:text-lg mb-12">
             {blocks.map((b) =>
@@ -104,13 +119,25 @@ export default async function JournalArticlePage({ params }: Props) {
           <div className="mt-12">
             <p className="label mb-4">Related</p>
             <div className="grid sm:grid-cols-2 gap-3">
-              {related.map((r) => (
+              {related.map((r, i) => (
                 <Link
                   key={r.slug}
                   href={`/journal/${r.slug}`}
-                  className="border border-line p-4 rounded-md hover:bg-mist"
+                  className="border border-line rounded-md overflow-hidden hover:bg-mist"
                 >
-                  {r.title}
+                  <div className="relative aspect-[16/10]">
+                    <Image
+                      src={r.image || PRODUCT_IMAGE_POOL[(i + 1) % PRODUCT_IMAGE_POOL.length]}
+                      alt={r.title}
+                      fill
+                      className="object-cover"
+                      sizes="50vw"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <p className="label mb-1">{r.topic}</p>
+                    <p className="font-serif text-xl">{r.title}</p>
+                  </div>
                 </Link>
               ))}
             </div>

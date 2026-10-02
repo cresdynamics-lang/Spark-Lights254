@@ -1,21 +1,26 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Reveal } from "@/components/ui/Reveal";
+import { PLACEHOLDER_IMAGES } from "@/lib/placeholder-images";
 
 const intents = [
   {
     title: "Upgrading a room",
     cta: "Upgrade ideas",
     href: "/guides/upgrading-your-lighting",
+    image: PLACEHOLDER_IMAGES.wall,
   },
   {
     title: "Building a new home",
     cta: "New home guide",
     href: "/guides/lighting-a-new-home",
+    image: PLACEHOLDER_IMAGES.room,
   },
   {
     title: "Looking for luxury",
     cta: "Signature collection",
     href: "/signature",
+    image: PLACEHOLDER_IMAGES.dining,
   },
 ];
 
@@ -34,20 +39,29 @@ export function IntentCards() {
             </p>
           </div>
         </Reveal>
-        {/* Keep 3 columns even on small phones */}
-        <div className="grid grid-cols-3 gap-px bg-line border border-line">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {intents.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="bg-paper p-3 sm:p-8 md:p-10 hover:bg-mist transition-colors duration-500 group min-h-[140px] sm:min-h-[220px] flex flex-col justify-between"
+              className="group relative overflow-hidden border border-line rounded-md min-h-[220px] sm:min-h-[280px] flex flex-col justify-end"
             >
-              <h3 className="font-serif text-sm sm:text-2xl md:text-3xl text-ink leading-snug">
-                {item.title}
-              </h3>
-              <span className="label text-ink mt-4 sm:mt-8 text-[0.55rem] sm:text-[0.6875rem] tracking-[0.1em] sm:tracking-[0.16em] group-hover:tracking-[0.18em] transition-all duration-500">
-                {item.cta} →
-              </span>
+              <Image
+                src={item.image}
+                alt={item.title}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                sizes="(max-width:640px) 100vw, 33vw"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/35 to-ink/10" />
+              <div className="relative p-5 sm:p-8">
+                <h3 className="font-serif text-2xl sm:text-3xl text-paper leading-snug mb-3">
+                  {item.title}
+                </h3>
+                <span className="label text-paper/80 tracking-[0.14em]">
+                  {item.cta} →
+                </span>
+              </div>
             </Link>
           ))}
         </div>
