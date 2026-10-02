@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { whatsappUrl } from "@/lib/constants";
 import { getProduct } from "@/lib/data";
 import { productOrderMessage } from "@/lib/whatsapp-order";
+import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
 
 const PROMPTS = [
   {
@@ -44,6 +45,18 @@ export function FloatingChat() {
   const product = productSlug ? getProduct(productSlug) : undefined;
   const orderHref = product ? whatsappUrl(productOrderMessage(product)) : whatsappUrl();
 
+  const trackOrder = () => {
+    if (product) {
+      const payload = metaProductPayload(product);
+      trackMeta("AddToCart", payload);
+      trackMeta("InitiateCheckout", payload);
+      trackMeta("Purchase", payload);
+    } else {
+      trackMeta("Contact", { currency: "KES" });
+    }
+    setOpen(false);
+  };
+
   useEffect(() => {
     const onDoc = (e: MouseEvent) => {
       if (!panelRef.current?.contains(e.target as Node)) setOpen(false);
@@ -76,7 +89,7 @@ export function FloatingChat() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block text-sm text-ink hover:bg-mist -mx-2 px-2 py-2 rounded-md transition-colors"
-                onClick={() => setOpen(false)}
+                onClick={trackOrder}
               >
                 Order this product — {product.name}
               </a>
@@ -90,7 +103,10 @@ export function FloatingChat() {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block px-4 py-3.5 text-sm text-ink hover:bg-mist transition-colors"
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    trackMeta("Contact", { currency: "KES" });
+                    setOpen(false);
+                  }}
                 >
                   {p.label}
                 </a>
@@ -103,7 +119,7 @@ export function FloatingChat() {
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 bg-[#25D366] text-white py-2.5 text-[0.6875rem] tracking-[0.14em] uppercase font-medium rounded-full hover:bg-[#1ebe57] transition-colors"
-              onClick={() => setOpen(false)}
+              onClick={trackOrder}
             >
               <WhatsAppIcon className="w-4 h-4" />
               Open WhatsApp

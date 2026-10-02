@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/data";
 import { WhatsAppButton } from "@/components/ui/Button";
 import { whatsappUrl } from "@/lib/constants";
 import { productOrderMessage } from "@/lib/whatsapp-order";
+import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
   const images = [product.image, product.hoverImage, "/images/products/roomm3.jpeg"].filter(
@@ -100,7 +101,12 @@ export function ProductBuyPanel({ product }: { product: Product }) {
           </div>
         ) : null}
 
-        <WhatsAppButton message={message} className="w-full sm:w-auto mb-8" />
+        <WhatsAppButton
+          message={message}
+          className="w-full sm:w-auto mb-8"
+          product={product}
+          trackPurchase
+        />
 
         <ul className="space-y-3 text-sm text-mute border-t border-line pt-6">
           <li>Deliver to Kilimani · arrives today if ordered before [time]</li>
@@ -118,7 +124,11 @@ export function ProductBuyPanel({ product }: { product: Product }) {
           )}
         </div>
 
-        <a href={whatsappUrl(message)} className="sr-only">
+        <a href={whatsappUrl(message)} className="sr-only" onClick={() => {
+          trackMeta("AddToCart", metaProductPayload(product));
+          trackMeta("InitiateCheckout", metaProductPayload(product));
+          trackMeta("Purchase", metaProductPayload(product));
+        }}>
           WhatsApp
         </a>
       </div>

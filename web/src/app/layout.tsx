@@ -5,6 +5,7 @@ import {
   organizationSchema,
   websiteSchema,
 } from "@/components/seo/JsonLd";
+import { MetaPixel } from "@/components/analytics/MetaPixel";
 import { SITE } from "@/lib/constants";
 import "./globals.css";
 
@@ -66,6 +67,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${inter.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-paper text-ink">
+        <MetaPixel />
         <JsonLd data={[organizationSchema(), websiteSchema()]} />
         {children}
       </body>

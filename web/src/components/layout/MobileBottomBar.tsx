@@ -1,6 +1,7 @@
 "use client";
 
 import { SITE, whatsappUrl } from "@/lib/constants";
+import { trackMeta } from "@/lib/meta-pixel";
 
 export function MobileBottomBar() {
   return (
@@ -11,12 +12,14 @@ export function MobileBottomBar() {
           target="_blank"
           rel="noopener noreferrer"
           className="bg-ink text-paper text-center py-3.5 label tracking-[0.16em]"
+          onClick={() => trackMeta("Contact", { currency: "KES" })}
         >
           WhatsApp
         </a>
         <a
           href={`tel:${SITE.phoneTel}`}
           className="text-ink text-center py-3.5 label tracking-[0.16em]"
+          onClick={() => trackMeta("Contact", { currency: "KES" })}
         >
           Call
         </a>

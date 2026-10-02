@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { SITE, DELIVERY_AREAS, whatsappUrl } from "@/lib/constants";
+import { SITE, DELIVERY_AREAS } from "@/lib/constants";
 import { BrandLogo } from "@/components/layout/BrandLogo";
+import { MetaWhatsAppLink } from "@/components/analytics/MetaWhatsAppLink";
 
 export function Footer() {
   return (
@@ -12,14 +13,9 @@ export function Footer() {
             Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Delivered
             fast. Installed properly.
           </p>
-          <a
-            href={whatsappUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex border border-paper/30 px-4 py-2.5 label text-paper tracking-[0.14em] rounded-full hover:bg-paper hover:text-ink transition-colors duration-300"
-          >
+          <MetaWhatsAppLink className="inline-flex border border-paper/30 px-4 py-2.5 label text-paper tracking-[0.14em] rounded-full hover:bg-paper hover:text-ink transition-colors duration-300">
             Order on WhatsApp
-          </a>
+          </MetaWhatsAppLink>
           <p className="text-sm text-paper/60">{SITE.whatsappDisplay}</p>
         </div>
 

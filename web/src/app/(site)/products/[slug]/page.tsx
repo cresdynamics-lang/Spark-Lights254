@@ -9,6 +9,7 @@ import {
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { ProductBuyPanel } from "@/components/product/ProductBuyPanel";
+import { MetaViewContent } from "@/components/analytics/MetaViewContent";
 import type { Metadata } from "next";
 import { getCategory } from "@/lib/data";
 import { SITE } from "@/lib/constants";
@@ -88,6 +89,7 @@ export default async function ProductPage({ params }: Props) {
           }),
         ]}
       />
+      <MetaViewContent product={product} />
       <section className="bg-paper border-b border-line">
         <div className="mx-auto max-w-7xl px-6 py-10 md:py-14">
           <Breadcrumbs

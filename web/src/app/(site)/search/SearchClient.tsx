@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { products, categories } from "@/lib/data";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { WhatsAppButton } from "@/components/ui/Button";
+import { trackMeta } from "@/lib/meta-pixel";
 
 export default function SearchClient() {
   const params = useSearchParams();
@@ -27,6 +28,21 @@ export default function SearchClient() {
         p.type.toLowerCase().includes(type.toLowerCase());
       return matchesQuery && matchesType;
     });
+  }, [q, type]);
+
+  useEffect(() => {
+    const query = q.trim();
+    if (!query) return;
+    const t = window.setTimeout(() => {
+      trackMeta("Search", {
+        search_string: query,
+        content_ids: results.slice(0, 10).map((p) => p.slug),
+        content_type: "product",
+      });
+    }, 600);
+    return () => window.clearTimeout(t);
+    // results derived from q/type; include type so filters re-track
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, type]);
 
   const suggestions = ["Wall lights", "Ring light", "Office", "Dimmer", "Pendant"];
