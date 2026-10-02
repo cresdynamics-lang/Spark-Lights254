@@ -5,6 +5,8 @@ import { listPublishedBlogs } from "@/lib/blogs";
 import { PRODUCT_IMAGE_POOL } from "@/lib/placeholder-images";
 import { seoMetadata } from "@/lib/seo";
 
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata() {
   return seoMetadata("/journal");
 }

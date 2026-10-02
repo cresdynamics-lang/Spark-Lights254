@@ -13,7 +13,15 @@ import { JsonLd, articleSchema, breadcrumbSchema } from "@/components/seo/JsonLd
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const rows = await listPublishedBlogs();
+    if (rows.length) return rows.map((p) => ({ slug: p.slug }));
+  } catch {
+    /* fall through */
+  }
   return staticBlogPosts.map((p) => ({ slug: p.slug }));
 }
 
