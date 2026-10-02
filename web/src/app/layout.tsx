@@ -32,9 +32,13 @@ export const metadata: Metadata = {
   applicationName: SITE.fullName,
   alternates: { canonical: SITE.url },
   icons: {
-    icon: [{ url: SITE.logo, type: "image/jpeg" }],
-    apple: [{ url: SITE.logo }],
-    shortcut: SITE.logo,
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: SITE.logo, type: "image/jpeg" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
+    shortcut: "/favicon.ico",
   },
   openGraph: {
     type: "website",
