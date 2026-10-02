@@ -35,6 +35,7 @@ export function Footer() {
               ["Pendant Lights", "/shop/pendant-lights"],
               ["Table & Floor Lamps", "/shop/table-floor-lamps"],
               ["Outdoor Lights", "/shop/outdoor-solar"],
+              ["Shop all", "/shop"],
               ["New arrivals", "/new-arrivals"],
               ["Sale", "/sale"],
             ].map(([label, href]) => (

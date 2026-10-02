@@ -6,6 +6,7 @@ import type { Product } from "@/lib/data";
 import { formatPrice } from "@/lib/data";
 import { WhatsAppButton } from "@/components/ui/Button";
 import { whatsappUrl } from "@/lib/constants";
+import { productOrderMessage } from "@/lib/whatsapp-order";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
   const images = [product.image, product.hoverImage, "/images/products/roomm3.jpeg"].filter(
@@ -15,9 +16,7 @@ export function ProductBuyPanel({ product }: { product: Product }) {
   const [finish, setFinish] = useState(product.finish?.[0]);
   const [size, setSize] = useState(product.sizes?.[0]);
 
-  const message = `Hi Sparklights — I’m interested in the ${product.name}${
-    finish ? ` (${finish})` : ""
-  }${size ? `, size ${size}` : ""}. Price shown: ${formatPrice(product.price)}.`;
+  const message = productOrderMessage(product, { finish, size });
 
   return (
     <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">

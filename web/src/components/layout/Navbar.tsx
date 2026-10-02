@@ -13,6 +13,8 @@ export function Navbar() {
   const [shopOpen, setShopOpen] = useState(false);
   const [roomsOpen, setRoomsOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileShopOpen, setMobileShopOpen] = useState(false);
+  const [mobileRoomsOpen, setMobileRoomsOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setCompact(window.scrollY > 40);
@@ -25,13 +27,17 @@ export function Navbar() {
     setShopOpen(false);
     setRoomsOpen(false);
     setMobileOpen(false);
+    setMobileShopOpen(false);
+    setMobileRoomsOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
+    if (!mobileOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMobileOpen(false);
     };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
   }, [mobileOpen]);
 
   const shopActive = pathname.startsWith("/shop") || pathname.startsWith("/products");
@@ -82,13 +88,9 @@ export function Navbar() {
               }}
               onMouseLeave={() => setShopOpen(false)}
             >
-              <button
-                type="button"
-                className={navBtn(shopActive, shopOpen)}
-                aria-expanded={shopOpen}
-              >
+              <Link href="/shop" className={navBtn(shopActive, shopOpen)}>
                 Shop
-              </button>
+              </Link>
             </div>
             <div
               className="relative"
@@ -126,7 +128,6 @@ export function Navbar() {
             </Link>
           </nav>
 
-          {/* Mobile: Search + hamburger · Desktop: Search only on the right */}
           <div className="flex items-center gap-1 shrink-0">
             <Link
               href="/search"
@@ -164,7 +165,7 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Shop mega menu — image cards like Rooms / Signature */}
+        {/* Shop mega menu */}
         <div
           className={`mega-menu absolute left-0 right-0 bg-paper border-b border-line hidden lg:block ${
             shopOpen ? "open" : ""
@@ -265,8 +266,8 @@ export function Navbar() {
             </div>
           </div>
           <div className="border-t border-line px-8 py-3 flex justify-between items-center">
-            <Link href="/shop/chandeliers" className="label hover:text-ink transition-colors">
-              View everything →
+            <Link href="/shop" className="label hover:text-ink transition-colors">
+              Shop all products →
             </Link>
             <Link href="/showroom" className="label hover:text-ink transition-colors">
               Visit showroom →
@@ -302,59 +303,184 @@ export function Navbar() {
             ))}
           </div>
         </div>
-      </header>
 
-      {/* Mobile full-screen menu */}
-      {mobileOpen ? (
-        <div className="fixed inset-0 z-[60] bg-paper flex flex-col lg:hidden">
-          <div className="flex items-center justify-between px-4 h-16 border-b border-line">
-            <span className="font-serif text-lg tracking-[0.1em] uppercase">{SITE.name}</span>
-            <button
-              type="button"
-              className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-mist"
-              onClick={() => setMobileOpen(false)}
-              aria-label="Close menu"
-            >
-              <span className="relative w-5 h-5">
-                <span className="absolute left-0 top-1/2 w-full h-[1.5px] bg-ink rotate-45" />
-                <span className="absolute left-0 top-1/2 w-full h-[1.5px] bg-ink -rotate-45" />
-              </span>
-            </button>
-          </div>
-          <nav className="flex-1 overflow-y-auto px-5 py-6 space-y-1">
-            {[
-              { href: "/search", label: "Search" },
-              { href: "/shop/chandeliers", label: "Shop" },
-              { href: "/rooms/dining-room", label: "Rooms" },
-              { href: "/signature", label: "Signature" },
-              { href: "/new-arrivals", label: "New arrivals" },
-              { href: "/sale", label: "Sale" },
-              { href: "/projects", label: "Projects" },
-              { href: "/delivery", label: "Delivery" },
-              { href: "/about", label: "About" },
-              { href: "/journal", label: "Journal" },
-              { href: "/request-a-quote", label: "Request a quote" },
-              { href: "/showroom", label: "Showroom" },
-            ].map((item) => (
+        {/* Mobile dropdown menu */}
+        {mobileOpen ? (
+          <div className="lg:hidden absolute left-0 right-0 top-full z-[60] border-b border-line bg-paper shadow-[0_12px_40px_rgba(0,0,0,0.08)] max-h-[min(78vh,640px)] overflow-y-auto">
+            <nav className="px-4 py-2">
               <Link
-                key={item.href}
-                href={item.href}
-                className="block font-serif text-2xl sm:text-3xl text-ink py-3 border-b border-line/80"
+                href="/search"
+                className="block font-serif text-xl text-ink py-3.5 border-b border-line/70"
                 onClick={() => setMobileOpen(false)}
               >
-                {item.label}
+                Search
               </Link>
-            ))}
-          </nav>
-          <div className="p-4 border-t border-line pb-24">
-            <a
-              href={`tel:${SITE.phoneTel}`}
-              className="block border border-ink text-ink text-center py-3.5 label tracking-[0.14em] rounded-full"
-            >
-              Call {SITE.phoneDisplay}
-            </a>
+
+              {/* Shop accordion */}
+              <div className="border-b border-line/70">
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/shop"
+                    className="flex-1 font-serif text-xl text-ink py-3.5"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Shop
+                  </Link>
+                  <button
+                    type="button"
+                    aria-expanded={mobileShopOpen}
+                    aria-label={mobileShopOpen ? "Collapse shop sections" : "Expand shop sections"}
+                    onClick={() => {
+                      setMobileShopOpen((v) => !v);
+                      setMobileRoomsOpen(false);
+                    }}
+                    className="w-11 h-11 flex items-center justify-center rounded-full border border-line text-ink text-2xl leading-none shrink-0"
+                  >
+                    <span
+                      className={`block transition-transform duration-300 ${
+                        mobileShopOpen ? "rotate-45" : ""
+                      }`}
+                    >
+                      +
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    mobileShopOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pb-4 pl-1 space-y-1">
+                      <p className="label pt-1 pb-2">Categories</p>
+                      {categories.map((c) => (
+                        <Link
+                          key={c.slug}
+                          href={`/shop/${c.slug}`}
+                          className="block text-sm text-mute hover:text-ink py-2"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {c.name}
+                        </Link>
+                      ))}
+                      <Link
+                        href="/shop"
+                        className="block text-sm text-ink font-medium py-2 border-t border-line mt-2 pt-3"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        View all products →
+                      </Link>
+                      <Link
+                        href="/sale"
+                        className="block text-sm text-mute hover:text-ink py-2"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        Sale · Best sellers
+                      </Link>
+                      <Link
+                        href="/new-arrivals"
+                        className="block text-sm text-mute hover:text-ink py-2"
+                        onClick={() => setMobileOpen(false)}
+                      >
+                        New arrivals
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Rooms accordion */}
+              <div className="border-b border-line/70">
+                <div className="flex items-center gap-2">
+                  <Link
+                    href="/rooms/dining-room"
+                    className="flex-1 font-serif text-xl text-ink py-3.5"
+                    onClick={() => setMobileOpen(false)}
+                  >
+                    Rooms
+                  </Link>
+                  <button
+                    type="button"
+                    aria-expanded={mobileRoomsOpen}
+                    aria-label={mobileRoomsOpen ? "Collapse rooms" : "Expand rooms"}
+                    onClick={() => {
+                      setMobileRoomsOpen((v) => !v);
+                      setMobileShopOpen(false);
+                    }}
+                    className="w-11 h-11 flex items-center justify-center rounded-full border border-line text-ink text-2xl leading-none shrink-0"
+                  >
+                    <span
+                      className={`block transition-transform duration-300 ${
+                        mobileRoomsOpen ? "rotate-45" : ""
+                      }`}
+                    >
+                      +
+                    </span>
+                  </button>
+                </div>
+                <div
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+                    mobileRoomsOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="pb-4 pl-1 space-y-1">
+                      {rooms.map((r) => (
+                        <Link
+                          key={r.slug}
+                          href={`/rooms/${r.slug}`}
+                          className="block text-sm text-mute hover:text-ink py-2"
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {r.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {[
+                { href: "/signature", label: "Signature" },
+                { href: "/new-arrivals", label: "New arrivals" },
+                { href: "/sale", label: "Sale" },
+                { href: "/projects", label: "Projects" },
+                { href: "/delivery", label: "Delivery" },
+                { href: "/about", label: "About" },
+                { href: "/journal", label: "Journal" },
+                { href: "/request-a-quote", label: "Request a quote" },
+                { href: "/showroom", label: "Showroom" },
+              ].map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="block font-serif text-xl text-ink py-3.5 border-b border-line/70 last:border-0"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <div className="px-4 py-4 border-t border-line">
+              <a
+                href={`tel:${SITE.phoneTel}`}
+                className="block border border-ink text-ink text-center py-3 label tracking-[0.14em] rounded-full"
+              >
+                Call {SITE.phoneDisplay}
+              </a>
+            </div>
           </div>
-        </div>
+        ) : null}
+      </header>
+
+      {/* Tap-away backdrop for mobile dropdown */}
+      {mobileOpen ? (
+        <button
+          type="button"
+          aria-label="Close menu"
+          className="fixed inset-0 z-40 bg-ink/20 lg:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
       ) : null}
     </>
   );

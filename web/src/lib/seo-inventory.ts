@@ -149,6 +149,18 @@ const rows: SeoInventoryRow[] = [
     published: true,
   },
   {
+    path: "/shop",
+    title: "Shop All Lighting Nairobi | Sparklights 254",
+    description:
+      "Browse every chandelier, wall light, ceiling light and pendant. Search by style or room. Order on WhatsApp.",
+    h1: "Shop all lighting",
+    family: "category",
+    schemaType: "CollectionPage",
+    parentPath: "/",
+    indexable: true,
+    published: true,
+  },
+  {
     path: "/collection",
     title: "Lighting Collection Nairobi | Shop by Style",
     description:

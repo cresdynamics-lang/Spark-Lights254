@@ -25,10 +25,37 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = getProduct(slug);
   if (!product) return {};
   const title = `${product.name} | Nairobi`.slice(0, 60);
+  const description = product.description.slice(0, 155);
+  const url = `${SITE.url}/products/${slug}`;
+  const image = product.image.startsWith("http")
+    ? product.image
+    : `${SITE.url}${product.image}`;
   return {
     title: { absolute: title },
-    description: product.description.slice(0, 155),
-    alternates: { canonical: `${SITE.url}/products/${slug}` },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE.fullName,
+      type: "website",
+      locale: "en_KE",
+      images: [
+        {
+          url: image,
+          alt: product.name,
+          width: 1200,
+          height: 1500,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [image],
+    },
   };
 }
 
