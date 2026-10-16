@@ -14,6 +14,9 @@ type BlogValues = {
   minutes?: number;
   audienceHref?: string | null;
   image?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  faqsJson?: string;
   featured?: boolean;
   published?: boolean;
 };
@@ -47,6 +50,7 @@ export function BlogForm({
             placeholder="auto from title if blank"
             className={field}
           />
+          <p className="text-xs text-mute mt-1">Live at /blog/slug and /journal/slug</p>
         </div>
         <div>
           <label className={label} htmlFor="topic">
@@ -91,6 +95,32 @@ export function BlogForm({
             className={field}
           />
         </div>
+        <div>
+          <label className={label} htmlFor="metaTitle">
+            Meta title (≤60 chars)
+          </label>
+          <input
+            id="metaTitle"
+            name="metaTitle"
+            maxLength={70}
+            defaultValue={values?.metaTitle || ""}
+            placeholder="Defaults to page title"
+            className={field}
+          />
+        </div>
+        <div>
+          <label className={label} htmlFor="metaDescription">
+            Meta description (≤155 chars)
+          </label>
+          <input
+            id="metaDescription"
+            name="metaDescription"
+            maxLength={170}
+            defaultValue={values?.metaDescription || ""}
+            placeholder="Defaults to excerpt"
+            className={field}
+          />
+        </div>
         <div className="sm:col-span-2">
           <label className={label} htmlFor="body">
             Body
@@ -98,14 +128,34 @@ export function BlogForm({
           <textarea
             id="body"
             name="body"
-            rows={12}
+            rows={16}
             required
             defaultValue={values?.body || ""}
-            placeholder={"Intro paragraph.\n\n## Section heading\n\nMore copy…"}
+            placeholder={"Intro paragraph.\n\n## Question as H2?\n\n40–60 word answer…\n\n| Col | Col |\n| --- | --- |\n| a | b |\n\n1. Numbered step"}
             className={field}
           />
           <p className="text-xs text-mute mt-2">
-            Use blank lines between paragraphs. Start a line with ## for a heading.
+            Use ## / ### headings, blank lines between paragraphs, - or 1. lists, and | tables |. Links: [text](/path).
+          </p>
+        </div>
+        <div className="sm:col-span-2">
+          <label className={label} htmlFor="faqsJson">
+            FAQ items (JSON array)
+          </label>
+          <textarea
+            id="faqsJson"
+            name="faqsJson"
+            rows={6}
+            defaultValue={
+              values?.faqsJson ??
+              (values
+                ? "[]"
+                : '[\n  {"q": "Question?", "a": "Answer."}\n]')
+            }
+            className={field + " font-mono text-xs"}
+          />
+          <p className="text-xs text-mute mt-2">
+            JSON array of {`{"q":"...","a":"..."}`} objects (Prisma Json). Use [] to clear. Shown at the bottom of the post.
           </p>
         </div>
         <div>
@@ -116,15 +166,21 @@ export function BlogForm({
             id="audienceHref"
             name="audienceHref"
             defaultValue={values?.audienceHref || ""}
-            placeholder="/podcast-studio-lighting-nairobi"
+            placeholder="/shop/chandeliers"
             className={field}
           />
         </div>
         <div>
           <label className={label} htmlFor="image">
-            Image path (optional)
+            Hero image path
           </label>
-          <input id="image" name="image" defaultValue={values?.image || ""} className={field} />
+          <input
+            id="image"
+            name="image"
+            defaultValue={values?.image || ""}
+            placeholder="/images/products/…"
+            className={field}
+          />
         </div>
         <div className="flex flex-wrap gap-6 sm:col-span-2">
           <label className="flex items-center gap-2 text-sm">

@@ -2,6 +2,8 @@ export const SITE = {
   name: "Sparklights",
   fullName: "Sparklights 254",
   tagline: "254 · Lighting · Nairobi",
+  brandDescription:
+    "Sparklights 254 is a Nairobi lighting retailer selling chandeliers, wall lights, ceiling lights, pendant, bedroom, dining and kitchen lights, with delivery and installation across Kenya from New Nyamakima Electrical Point Building, Duruma Road.",
   email: "marykamaa548@gmail.com",
   phoneDisplay: "+254 712 827 840",
   phoneTel: "+254712827840",
@@ -13,8 +15,10 @@ export const SITE = {
   address:
     "Nyamakima, Duruma Road, New Nyamakima Electrical Point Building, Shop 216, 2nd Floor, Nairobi, Kenya",
   hours: "Mon – Sat · 8:00 AM – 6:00 PM",
-  /** PLACEHOLDER — confirm exact map pin to 5 decimals with client */
+  /** Approximate CBD / Nyamakima pin — refine to exact GBP coords when confirmed */
   geo: { lat: -1.28333, lng: 36.81667 },
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=New+Nyamakima+Electrical+Point+Building+Duruma+Road+Nairobi",
   openingHours: [
     {
       days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -25,7 +29,7 @@ export const SITE = {
   url: "https://sparklights.co.ke",
   /** Official brand mark — chandelier logo used sitewide */
   logo: "/images/brand/sparklights-logo.jpg",
-  /** PLACEHOLDER social profiles */
+  /** Add real profile URLs when confirmed — empty values are omitted from schema */
   sameAs: {
     instagram: "",
     facebook: "",

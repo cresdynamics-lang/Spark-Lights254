@@ -113,21 +113,28 @@ model Project {
 }
 
 model Blog {
-  id           String   @id @default(cuid())
-  slug         String   @unique
-  title        String
-  topic        String
-  excerpt      String
-  body         String   @db.Text
-  author       String   @default("Sparklights 254")
-  minutes      Int      @default(5)
-  featured     Boolean  @default(false)
-  published    Boolean  @default(true)
-  audienceHref String?
-  image        String?
-  sortOrder    Int      @default(0)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  id              String    @id @default(cuid())
+  slug            String    @unique
+  title           String
+  topic           String
+  excerpt         String
+  body            String    @db.Text
+  author          String    @default("Sparklights 254")
+  minutes         Int       @default(5)
+  featured        Boolean   @default(false)
+  published       Boolean   @default(true)
+  audienceHref    String?
+  image           String?
+  /** SEO meta title — keep under ~60 characters */
+  metaTitle       String?
+  /** SEO meta description — keep under ~155 characters */
+  metaDescription String?
+  /** Visible FAQ items: [{q, a}] — helps snippets / AI answers */
+  faqs            Json?
+  publishedAt     DateTime?
+  sortOrder       Int       @default(0)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 
   @@index([published])
   @@index([topic])
@@ -160,4 +167,33 @@ model SiteSetting {
   key       String   @unique
   value     String
   updatedAt DateTime @updatedAt
+}
+
+/** WhatsApp orders, contact messages, and quote requests from the website. */
+model Enquiry {
+  id           String   @id @default(cuid())
+  /** order | message | quote */
+  type         String
+  /** new | contacted | quoted | ordered | closed */
+  status       String   @default("new")
+  name         String?
+  phone        String?
+  email        String?
+  area         String?
+  message      String   @db.Text
+  productSlug  String?
+  productName  String?
+  productPrice Int?
+  productImage String?
+  productUrl   String?
+  /** product-card | product-page | contact | quote | chat | other */
+  source       String   @default("other")
+  notes        String?  @db.Text
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([status])
+  @@index([type])
+  @@index([createdAt])
+  @@index([productSlug])
 }

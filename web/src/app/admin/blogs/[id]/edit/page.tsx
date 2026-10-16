@@ -39,6 +39,9 @@ export default async function EditBlogPage({ params }: Props) {
           minutes: blog.minutes,
           audienceHref: blog.audienceHref,
           image: blog.image,
+          metaTitle: blog.metaTitle,
+          metaDescription: blog.metaDescription,
+          faqsJson: blog.faqs ? JSON.stringify(blog.faqs, null, 2) : undefined,
           featured: blog.featured,
           published: blog.published,
         }}
