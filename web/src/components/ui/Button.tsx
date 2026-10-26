@@ -61,6 +61,8 @@ export function WhatsAppButton({
   className = "",
   product,
   trackPurchase = false,
+  leadSource,
+  onBeforeOpen,
 }: {
   message?: string;
   label?: string;
@@ -71,11 +73,15 @@ export function WhatsAppButton({
     price: number;
     category?: string;
     type?: string;
+    image?: string;
   };
   /** When true (product order CTAs), fire AddToCart → InitiateCheckout → Purchase */
   trackPurchase?: boolean;
+  leadSource?: string;
+  onBeforeOpen?: () => void | Promise<void>;
 }) {
   const onClick = () => {
+    void onBeforeOpen?.();
     if (product && trackPurchase) {
       const payload = metaProductPayload(product);
       trackMeta("AddToCart", payload);
@@ -87,7 +93,7 @@ export function WhatsAppButton({
       trackMeta("Contact", metaProductPayload(product));
       return;
     }
-    const payload: MetaContent = { currency: "KES" };
+    const payload: MetaContent = { currency: "KES", ...(leadSource ? { content_name: leadSource } : {}) };
     trackMeta("Contact", payload);
   };
 

@@ -4,6 +4,7 @@ import {
   JsonLd,
   organizationSchema,
   websiteSchema,
+  localBusinessSchema,
 } from "@/components/seo/JsonLd";
 import { MetaPixel } from "@/components/analytics/MetaPixel";
 import { SITE } from "@/lib/constants";
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     template: "%s | Sparklights 254",
   },
   description:
-    "Chandeliers, wall lights and statement ceiling lights for homes across Kenya. Same-day delivery across Nairobi. Installed properly.",
+    "Sparklights 254 — chandeliers, wall lights and ceiling lights for Kenyan homes. Same-day Nairobi delivery and professional installation.",
   applicationName: SITE.fullName,
   alternates: { canonical: SITE.url },
   icons: {
@@ -68,7 +69,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="en" className={`${inter.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-paper text-ink">
         <MetaPixel />
-        <JsonLd data={[organizationSchema(), websiteSchema()]} />
+        <JsonLd data={[organizationSchema(), websiteSchema(), localBusinessSchema()]} />
         {children}
       </body>
     </html>

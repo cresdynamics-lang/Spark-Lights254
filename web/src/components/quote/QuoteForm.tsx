@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { WhatsAppButton } from "@/components/ui/Button";
 import { whatsappUrl } from "@/lib/constants";
+import { logLead } from "@/lib/leads";
+import { trackMeta } from "@/lib/meta-pixel";
 
 const TYPES = ["Office", "Hotel", "Restaurant", "Shop", "Designer / Contractor"];
 
@@ -15,17 +17,29 @@ export function QuoteForm() {
       onSubmit={(e) => {
         e.preventDefault();
         const fd = new FormData(e.currentTarget);
+        const name = String(fd.get("name") || "");
+        const phone = String(fd.get("phone") || "");
+        const location = String(fd.get("location") || "");
         const msg = [
           "Hi Sparklights — quote request",
           `Type: ${type}`,
-          `Name: ${fd.get("name")}`,
+          `Name: ${name}`,
           `Business: ${fd.get("business")}`,
-          `Phone: ${fd.get("phone")}`,
-          `Location: ${fd.get("location")}`,
+          `Phone: ${phone}`,
+          `Location: ${location}`,
           `Rooms/areas: ${fd.get("rooms")}`,
           `Target date: ${fd.get("date")}`,
           `Budget: ${fd.get("budget") || "not specified"}`,
         ].join("\n");
+        void logLead({
+          type: "quote",
+          source: "quote-form",
+          name,
+          phone,
+          area: location,
+          message: msg,
+        });
+        trackMeta("Contact", { currency: "KES", content_name: "quote-form" });
         window.open(whatsappUrl(msg), "_blank", "noopener,noreferrer");
       }}
     >

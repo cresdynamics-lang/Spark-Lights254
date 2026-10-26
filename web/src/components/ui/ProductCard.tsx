@@ -4,8 +4,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, type Product } from "@/lib/data";
 import { whatsappUrl } from "@/lib/constants";
-import { productOrderMessage } from "@/lib/whatsapp-order";
+import { productOrderMessage, productPageUrl } from "@/lib/whatsapp-order";
 import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
+import { logLead } from "@/lib/leads";
 
 function WhatsAppIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   return (
@@ -26,6 +27,17 @@ export function ProductCard({
   const orderHref = whatsappUrl(productOrderMessage(product));
 
   const onOrder = () => {
+    const msg = productOrderMessage(product);
+    void logLead({
+      type: "order",
+      source: "product-card",
+      message: msg,
+      productSlug: product.slug,
+      productName: product.name,
+      productPrice: product.price,
+      productImage: product.image,
+      productUrl: productPageUrl(product.slug),
+    });
     const payload = metaProductPayload(product);
     trackMeta("AddToCart", payload);
     trackMeta("InitiateCheckout", payload);
@@ -45,10 +57,10 @@ export function ProductCard({
             loading="lazy"
             quality={70}
           />
-          {product.hoverImage ? (
+          {product.hoverImage && product.hoverImage !== product.image ? (
             <Image
               src={product.hoverImage}
-              alt=""
+              alt={`${product.name} alternate view`}
               fill
               className="secondary object-cover"
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"

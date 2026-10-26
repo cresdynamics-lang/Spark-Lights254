@@ -10,6 +10,8 @@ import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { FAQ } from "@/components/ui/FAQ";
 import { ClosingCTA } from "@/components/ui/ClosingCTA";
 import { CategoryProductGrid } from "@/components/shop/CategoryProductGrid";
+import { JsonLd, breadcrumbSchema, collectionPageSchema, faqPageSchema } from "@/components/seo/JsonLd";
+import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ category: string }> };
@@ -24,9 +26,23 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params;
   const cat = await catalogCategory(category);
   if (!cat) return {};
+  const title = `${cat.name} in Nairobi | Sparklights 254`.slice(0, 60);
+  const description = (
+    cat.description || `Shop ${cat.name} in Nairobi with delivery and installation.`
+  ).slice(0, 155);
+  const url = `${SITE.url}/shop/${cat.slug}`;
   return {
-    title: `${cat.name} in Nairobi`,
-    description: cat.description,
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE.fullName,
+      locale: "en_KE",
+      type: "website",
+    },
   };
 }
 
@@ -41,23 +57,24 @@ export default async function CategoryPage({ params }: Props) {
   ]);
 
   const related = allCategories.filter((c) => c.slug !== category).slice(0, 4);
+  const singular = cat.name.toLowerCase().replace(/s$/, "");
 
   const faqs = [
     {
-      q: `How much does a ${cat.name.toLowerCase().replace(/s$/, "")} cost in Nairobi?`,
-      a: `Our ${cat.name.toLowerCase()} start from the prices shown below depending on size, crystal and finish.`,
+      q: `How much does a ${singular} cost in Nairobi?`,
+      a: `Sparklights ${cat.name.toLowerCase()} are priced on each product card. Ranges depend on size, material and finish — WhatsApp us with a room photo for a shortlist in your budget.`,
     },
     {
       q: `Do you install ${cat.name.toLowerCase()}?`,
-      a: "Yes. Installation is quoted by site and completed by our team.",
+      a: "Yes. Our team delivers, installs and tests before we leave. Installation is quoted by site.",
     },
     {
       q: "How long will delivery take?",
-      a: "Same-day across Nairobi when ordered before [time]. Countrywide on request.",
+      a: "Same-day across much of Nairobi when ordered early enough and stock is ready. Countrywide delivery on request.",
     },
     {
       q: "What size suits my room?",
-      a: "Send a photo and measurements on WhatsApp — we’ll confirm before you buy.",
+      a: "Send a photo and measurements on WhatsApp — we confirm size before you buy.",
     },
     {
       q: "Are the bulbs included?",
@@ -65,16 +82,47 @@ export default async function CategoryPage({ params }: Props) {
     },
   ];
 
+  const faqLd = faqPageSchema(faqs);
+
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Shop", path: "/shop" },
+            { name: cat.name, path: `/shop/${cat.slug}` },
+          ]),
+          collectionPageSchema({
+            name: `${cat.name} in Nairobi`,
+            description: cat.description,
+            path: `/shop/${cat.slug}`,
+            items: items.slice(0, 24).map((p) => ({
+              name: p.name,
+              path: `/products/${p.slug}`,
+            })),
+          }),
+          ...(faqLd ? [faqLd] : []),
+        ]}
+      />
       <section className="border-b border-line bg-paper">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-10 sm:py-14 md:py-20">
-          <Breadcrumbs items={[{ label: "Home", href: "/" }, { label: cat.name }]} />
+          <Breadcrumbs
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Shop", href: "/shop" },
+              { label: cat.name },
+            ]}
+          />
           <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-ink leading-tight mb-3 sm:mb-4">
             {cat.name} in Nairobi
           </h1>
           <p className="text-mute text-base sm:text-lg max-w-2xl leading-relaxed">
             {cat.description}
+          </p>
+          <p className="text-mute text-sm mt-3 max-w-2xl">
+            Sparklights 254 supplies and installs {cat.name.toLowerCase()} across Nairobi and Kenya —
+            WhatsApp {SITE.whatsappDisplay} for sizing help.
           </p>
           <p className="label mt-4">{items.length} products</p>
         </div>
@@ -91,7 +139,7 @@ export default async function CategoryPage({ params }: Props) {
           <div>
             <p className="label mb-3">Buying guide</p>
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl text-ink leading-tight mb-4 sm:mb-5">
-              How to choose the right {cat.name.toLowerCase().replace(/s$/, "")}
+              How to choose the right {singular}
             </h2>
             <p className="text-mute text-base sm:text-lg leading-relaxed mb-4">
               A piece that is too small looks lost. One that is too big takes over the room. Here is
@@ -145,7 +193,8 @@ export default async function CategoryPage({ params }: Props) {
                 href={`/shop/${c.slug}`}
                 className="border border-line p-4 sm:p-6 hover:bg-mist transition-colors rounded-md"
               >
-                <span className="font-serif text-base sm:text-xl">{c.name}</span>
+                <p className="font-serif text-xl sm:text-2xl text-ink">{c.name}</p>
+                <p className="label mt-2">Shop →</p>
               </Link>
             ))}
           </div>
@@ -153,7 +202,7 @@ export default async function CategoryPage({ params }: Props) {
       </section>
 
       <ClosingCTA
-        title={`Not sure which ${cat.name.toLowerCase().replace(/s$/, "")} fits?`}
+        title={`Not sure which ${singular} fits?`}
         body="Send a photo of the room and the ceiling height. We will recommend a size and style."
       />
     </>

@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 import { rooms, getRoom, productsByRoom, products } from "@/lib/data";
+import { catalogProductsByRoom } from "@/lib/catalog";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { FAQ } from "@/components/ui/FAQ";
 import { ClosingCTA } from "@/components/ui/ClosingCTA";
+import { JsonLd, breadcrumbSchema, faqPageSchema } from "@/components/seo/JsonLd";
+import { SITE } from "@/lib/constants";
 import type { Metadata } from "next";
 
 type Props = { params: Promise<{ room: string }> };
@@ -16,7 +19,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { room } = await params;
   const r = getRoom(room);
   if (!r) return {};
-  return { title: r.headline, description: r.description };
+  const title = `${r.headline}`.slice(0, 60);
+  const description = r.description.slice(0, 155);
+  const url = `${SITE.url}/rooms/${r.slug}`;
+  return {
+    title: { absolute: title },
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title,
+      description,
+      url,
+      siteName: SITE.fullName,
+      locale: "en_KE",
+      type: "website",
+    },
+  };
 }
 
 export default async function RoomPage({ params }: Props) {
@@ -24,17 +42,36 @@ export default async function RoomPage({ params }: Props) {
   const r = getRoom(room);
   if (!r) notFound();
 
-  const items =
-    productsByRoom(room).length > 0 ? productsByRoom(room).slice(0, 8) : products.slice(0, 4);
+  let items = productsByRoom(room);
+  try {
+    const dbItems = await catalogProductsByRoom(room);
+    if (dbItems.length) items = dbItems;
+  } catch {
+    /* static fallback */
+  }
+  if (!items.length) items = products.slice(0, 4);
+  items = items.slice(0, 8);
+
+  const faqLd = faqPageSchema(r.faqs);
 
   return (
     <>
+      <JsonLd
+        data={[
+          breadcrumbSchema([
+            { name: "Home", path: "/" },
+            { name: "Rooms", path: "/rooms/living-room" },
+            { name: r.name, path: `/rooms/${r.slug}` },
+          ]),
+          ...(faqLd ? [faqLd] : []),
+        ]}
+      />
       <section className="border-b border-line bg-paper">
         <div className="mx-auto max-w-7xl px-6 py-14 md:py-20">
           <Breadcrumbs
             items={[
               { label: "Home", href: "/" },
-              { label: "Rooms", href: "/rooms/dining-room" },
+              { label: "Rooms", href: "/rooms/living-room" },
               { label: r.name },
             ]}
           />
@@ -42,6 +79,10 @@ export default async function RoomPage({ params }: Props) {
             {r.headline}
           </h1>
           <p className="text-mute text-lg max-w-2xl leading-relaxed">{r.description}</p>
+          <p className="text-mute text-sm mt-4 max-w-2xl">
+            Sparklights 254 delivers and installs {r.name.toLowerCase()} lighting across Nairobi and
+            Kenya. Chat on WhatsApp {SITE.whatsappDisplay} with a room photo for a size recommendation.
+          </p>
         </div>
       </section>
 
@@ -49,7 +90,7 @@ export default async function RoomPage({ params }: Props) {
         <section className="border-b border-line bg-mist">
           <div className="mx-auto max-w-7xl px-6 py-16">
             <p className="label mb-3">Start here</p>
-            <h2 className="font-serif text-4xl mb-10">Choose by your table</h2>
+            <h2 className="font-serif text-4xl mb-10">Choose by your space</h2>
             <div className="grid md:grid-cols-3 gap-px bg-line border border-line">
               {r.chooseBy.map((c) => (
                 <div key={c.title} className="bg-paper p-8">

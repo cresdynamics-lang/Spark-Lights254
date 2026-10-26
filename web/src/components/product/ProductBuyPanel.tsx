@@ -5,26 +5,25 @@ import { useState } from "react";
 import type { Product } from "@/lib/data";
 import { formatPrice } from "@/lib/data";
 import { WhatsAppButton } from "@/components/ui/Button";
-import { whatsappUrl } from "@/lib/constants";
-import { productOrderMessage } from "@/lib/whatsapp-order";
-import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
+import { productGalleryImages, productOrderMessage, productPageUrl, absoluteAssetUrl } from "@/lib/whatsapp-order";
+import { logLead } from "@/lib/leads";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
-  const images = [product.image, product.hoverImage, "/images/products/roomm3.jpg"].filter(
-    Boolean
-  ) as string[];
+  /** Only this product's own images — never a shared room filler. */
+  const images = productGalleryImages(product);
   const [active, setActive] = useState(0);
   const [finish, setFinish] = useState(product.finish?.[0]);
   const [size, setSize] = useState(product.sizes?.[0]);
 
-  const message = productOrderMessage(product, { finish, size });
+  const activeSrc = images[active] || product.image;
+  const message = productOrderMessage(product, { finish, size, image: activeSrc });
 
   return (
     <div className="grid lg:grid-cols-2 gap-10 lg:gap-16">
       <div>
         <div className="relative aspect-[4/5] bg-mist border border-line overflow-hidden mb-3">
           <Image
-            src={images[active]}
+            src={activeSrc}
             alt={product.name}
             fill
             className="object-cover"
@@ -32,21 +31,28 @@ export function ProductBuyPanel({ product }: { product: Product }) {
             sizes="(max-width: 1024px) 100vw, 50vw"
           />
         </div>
-        <div className="grid grid-cols-4 gap-2 mb-3">
-          {images.map((src, i) => (
-            <button
-              key={src + i}
-              type="button"
-              onClick={() => setActive(i)}
-              className={`relative aspect-square border overflow-hidden ${
-                active === i ? "border-ink" : "border-line"
-              }`}
-            >
-              <Image src={src} alt="" fill className="object-cover" />
-            </button>
-          ))}
-        </div>
-        <p className="label">Hover to zoom · Lights on · Lights off · In a room · Size reference</p>
+        {images.length > 1 ? (
+          <div className="grid grid-cols-4 gap-2 mb-3">
+            {images.map((src, i) => (
+              <button
+                key={src}
+                type="button"
+                onClick={() => setActive(i)}
+                className={`relative aspect-square border overflow-hidden ${
+                  active === i ? "border-ink" : "border-line"
+                }`}
+              >
+                <Image
+                  src={src}
+                  alt={`${product.name} view ${i + 1}`}
+                  fill
+                  className="object-cover"
+                />
+              </button>
+            ))}
+          </div>
+        ) : null}
+        <p className="label">Exact photo for this product listing</p>
       </div>
 
       <div>
@@ -58,7 +64,7 @@ export function ProductBuyPanel({ product }: { product: Product }) {
           {product.name}
         </h1>
         <p className="text-xl text-ink mb-1">{formatPrice(product.price)}</p>
-        <p className="text-sm text-mute mb-6">Price includes VAT · SKU SL-000</p>
+        <p className="text-sm text-mute mb-6">Price includes VAT · Order on WhatsApp</p>
         <p className="text-mute leading-relaxed mb-8 max-w-md">{product.description}</p>
 
         {product.finish?.length ? (
@@ -106,31 +112,36 @@ export function ProductBuyPanel({ product }: { product: Product }) {
           className="w-full sm:w-auto mb-8"
           product={product}
           trackPurchase
+          leadSource="product-page"
+          onBeforeOpen={() =>
+            logLead({
+              type: "order",
+              source: "product-page",
+              message,
+              productSlug: product.slug,
+              productName: product.name,
+              productPrice: product.price,
+              productImage: activeSrc,
+              productUrl: productPageUrl(product.slug),
+            })
+          }
         />
 
         <ul className="space-y-3 text-sm text-mute border-t border-line pt-6">
-          <li>Deliver to Kilimani · arrives today if ordered before [time]</li>
+          <li>Same-day delivery across much of Nairobi when stock allows</li>
           <li>Installation available · quoted by site</li>
-          <li>Tested before dispatch · [warranty period]</li>
+          <li>
+            Exact photo for this listing:{" "}
+            <a
+              href={absoluteAssetUrl(product.image)}
+              className="underline underline-offset-2"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              open image
+            </a>
+          </li>
         </ul>
-
-        <div className="mt-8 flex flex-wrap gap-4 label border-t border-line pt-6">
-          {["Details", "Dimensions & weight", "Installation", "Delivery & returns", "Warranty"].map(
-            (t) => (
-              <a key={t} href="#details" className="hover:text-ink">
-                {t}
-              </a>
-            )
-          )}
-        </div>
-
-        <a href={whatsappUrl(message)} className="sr-only" onClick={() => {
-          trackMeta("AddToCart", metaProductPayload(product));
-          trackMeta("InitiateCheckout", metaProductPayload(product));
-          trackMeta("Purchase", metaProductPayload(product));
-        }}>
-          WhatsApp
-        </a>
       </div>
     </div>
   );

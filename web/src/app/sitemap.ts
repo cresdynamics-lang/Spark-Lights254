@@ -74,7 +74,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   }
 
-  // Published journal posts
+  // Published journal / blog posts (canonical /blog/)
   try {
     const blogs = await prisma.blog.findMany({
       where: { published: true },
@@ -82,15 +82,59 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     });
     for (const b of blogs) {
       entries.push({
+        url: `${SITE.url}/blog/${b.slug}`,
+        lastModified: b.updatedAt,
+        changeFrequency: "weekly",
+        priority: 0.75,
+      });
+      entries.push({
         url: `${SITE.url}/journal/${b.slug}`,
         lastModified: b.updatedAt,
         changeFrequency: "weekly",
-        priority: 0.7,
+        priority: 0.65,
       });
     }
   } catch {
     /* ignore */
   }
+
+  // Room guides
+  try {
+    const roomRows = await prisma.room.findMany({
+      select: { slug: true, updatedAt: true },
+    });
+    for (const r of roomRows) {
+      entries.push({
+        url: `${SITE.url}/rooms/${r.slug}`,
+        lastModified: r.updatedAt,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+  } catch {
+    for (const slug of [
+      "dining-room",
+      "bedroom",
+      "kitchen",
+      "living-room",
+      "entrance-hallway",
+      "bathroom-mirror",
+    ]) {
+      entries.push({
+        url: `${SITE.url}/rooms/${slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      });
+    }
+  }
+
+  entries.push({
+    url: `${SITE.url}/llms.txt`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.3,
+  });
 
   const seen = new Set<string>();
   return entries.filter((e) => {

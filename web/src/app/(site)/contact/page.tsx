@@ -2,7 +2,8 @@ import Image from "next/image";
 import { SITE, whatsappUrl } from "@/lib/constants";
 import { PLACEHOLDER_IMAGES } from "@/lib/placeholder-images";
 import { Breadcrumbs } from "@/components/ui/Breadcrumbs";
-import { Button } from "@/components/ui/Button";
+import { ContactForm } from "@/components/contact/ContactForm";
+import { ContactWhatsAppStart } from "@/components/contact/ContactWhatsAppStart";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,68 +20,13 @@ export default function ContactPage() {
           Let&apos;s talk light.
         </h1>
         <p className="text-mute text-lg max-w-xl mb-10">
-          The fastest way is WhatsApp. If you prefer, send a message below.
+          The fastest way is WhatsApp. Messages you send here are also saved in our orders inbox.
         </p>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
           <div>
-            <a
-              href={whatsappUrl()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex w-full items-center justify-center bg-ink text-paper py-4 label tracking-[0.16em] mb-10"
-            >
-              Chat on WhatsApp
-            </a>
-
-            <form className="space-y-5" action={whatsappUrl()} method="get">
-              {[
-                { id: "name", label: "Your name", type: "text" },
-                { id: "phone", label: "Phone", type: "tel" },
-                { id: "area", label: "Area (e.g. Kilimani)", type: "text" },
-                { id: "what", label: "What are you lighting?", type: "text" },
-              ].map((f) => (
-                <div key={f.id}>
-                  <label htmlFor={f.id} className="label block mb-2">
-                    {f.label}
-                  </label>
-                  <input
-                    id={f.id}
-                    name={f.id}
-                    type={f.type}
-                    className="w-full border border-line bg-paper px-4 py-3 text-ink outline-none focus:border-ink transition-colors"
-                  />
-                </div>
-              ))}
-              <div>
-                <label htmlFor="message" className="label block mb-2">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={5}
-                  className="w-full border border-line bg-paper px-4 py-3 text-ink outline-none focus:border-ink transition-colors resize-y"
-                />
-              </div>
-              <div className="flex flex-row gap-2 sm:gap-3">
-                <Button
-                  href={whatsappUrl("Hi Sparklights — I’d like to send a message.")}
-                  external
-                  className="flex-1 sm:flex-none justify-center px-3 sm:px-6 text-[0.58rem] sm:text-[0.6875rem] whitespace-nowrap"
-                >
-                  Send message
-                </Button>
-                <Button
-                  href={whatsappUrl("Hi Sparklights — I’m attaching a photo of my room.")}
-                  variant="secondary"
-                  external
-                  className="flex-1 sm:flex-none justify-center px-3 sm:px-6 text-[0.58rem] sm:text-[0.6875rem] whitespace-nowrap"
-                >
-                  Attach a photo
-                </Button>
-              </div>
-            </form>
+            <ContactWhatsAppStart href={whatsappUrl()} />
+            <ContactForm />
           </div>
 
           <aside className="border border-line p-8 h-fit bg-mist">
@@ -103,7 +49,7 @@ export default function ContactPage() {
             <div className="relative aspect-[4/3] border border-line overflow-hidden rounded-md">
               <Image
                 src={PLACEHOLDER_IMAGES.showroom}
-                alt="Sparklights showroom lighting — sample product photo"
+                alt="Sparklights showroom on Duruma Road, Nairobi"
                 fill
                 className="object-cover"
                 sizes="(max-width:768px) 100vw, 40vw"

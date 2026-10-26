@@ -1,4 +1,4 @@
-export const META_PIXEL_ID = "996247916797830";
+export const META_PIXEL_ID = "1626392329151643";
 
 export type MetaContent = {
   content_name?: string;

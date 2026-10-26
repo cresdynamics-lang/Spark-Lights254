@@ -10,17 +10,34 @@ export function productPageUrl(slug: string) {
   return `${SITE.url}/products/${slug}`;
 }
 
-/** Rich WhatsApp order text: product photo URL + product page + order details. */
+/** Unique gallery images for this product only (no shared filler photos). */
+export function productGalleryImages(product: Pick<Product, "image" | "hoverImage">) {
+  const out: string[] = [];
+  const push = (src?: string | null) => {
+    if (!src) return;
+    if (!out.includes(src)) out.push(src);
+  };
+  push(product.image);
+  push(product.hoverImage);
+  return out;
+}
+
+/**
+ * WhatsApp order text with:
+ * - Clean product name
+ * - Website product page link
+ * - Exact product photo URL (this listing only)
+ */
 export function productOrderMessage(
   product: Product,
-  opts?: { finish?: string; size?: string },
+  opts?: { finish?: string; size?: string; image?: string },
 ) {
   const page = productPageUrl(product.slug);
-  const photo = absoluteAssetUrl(product.image);
+  const photo = absoluteAssetUrl(opts?.image || product.image);
   const lines = [
     "Hi Sparklights — I’d like to order this light.",
     "",
-    `Product: ${product.name}`,
+    `*${product.name}*`,
     `Type: ${product.type}`,
     `Price: ${formatPrice(product.price)}`,
   ];
@@ -28,16 +45,13 @@ export function productOrderMessage(
   if (opts?.size) lines.push(`Size: ${opts.size}`);
   lines.push(
     "",
-    `Product page (open to see the exact light):`,
+    "Product page on website:",
     page,
     "",
-    `Product photo:`,
+    "Exact product photo (website image link):",
     photo,
     "",
-    "Please confirm:",
-    "• Availability / stock for this exact piece",
-    "• Installation instructions or install quote",
-    "• Delivery to my area (fee and timing)",
+    "Please confirm availability, installation, and delivery to my area.",
   );
   return lines.join("\n");
 }

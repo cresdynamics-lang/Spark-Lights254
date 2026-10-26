@@ -5,7 +5,7 @@ import { MetaPixelPageView } from "@/components/analytics/MetaPixelPageView";
 
 /**
  * Meta Pixel base snippet (server-rendered) + SPA PageView tracker.
- * Pixel ID: 996247916797830
+ * Pixel ID: 1626392329151643
  */
 export function MetaPixel() {
   return (

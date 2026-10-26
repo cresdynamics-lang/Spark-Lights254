@@ -99,6 +99,7 @@ export default async function ProductPage({ params }: Props) {
             image: product.image,
             price: product.price,
             sku: product.slug,
+            category: cat?.name || product.type,
           }),
         ]}
       />
@@ -123,7 +124,7 @@ export default async function ProductPage({ params }: Props) {
         <div className="mx-auto max-w-7xl px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="relative aspect-[4/5] border border-line overflow-hidden bg-paper">
             <Image
-              src={product.hoverImage || product.image}
+              src={product.image}
               alt={`${product.name} — close detail of finish and form`}
               fill
               className="object-cover"
