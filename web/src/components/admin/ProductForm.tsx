@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ProductImageAI } from "@/components/admin/ProductImageAI";
 
 const field =
   "w-full border border-line px-4 py-3 rounded-md outline-none focus:border-ink bg-paper text-sm";
@@ -48,6 +49,7 @@ export function ProductForm({
   return (
     <form action={action} className="space-y-6 max-w-3xl">
       <div className="grid sm:grid-cols-2 gap-4">
+        <ProductImageAI initialImage={values?.image} autofillDefault={!values?.name} />
         <div className="sm:col-span-2">
           <label className={label} htmlFor="name">
             Name
@@ -143,19 +145,6 @@ export function ProductForm({
           </div>
         </div>
 
-        <div className="sm:col-span-2">
-          <label className={label} htmlFor="image">
-            Image path
-          </label>
-          <input
-            id="image"
-            name="image"
-            required
-            defaultValue={values?.image || ""}
-            placeholder="/images/products/example.jpeg"
-            className={field}
-          />
-        </div>
         <div>
           <label className={label} htmlFor="hoverImage">
             Hover image (optional)
