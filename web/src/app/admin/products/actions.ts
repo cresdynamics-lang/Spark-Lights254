@@ -51,7 +51,7 @@ async function productFromForm(formData: FormData) {
   const specs = parseSpecs(String(formData.get("specs") || ""));
 
   if (!name || !slug || !categorySlugs.length || !image || !Number.isFinite(price) || price < 0) {
-    throw new Error("Missing required product fields");
+    throw new Error("Missing required fields: name, at least one category, photo and a valid price");
   }
 
   const primary = await prisma.category.findUnique({ where: { slug: categorySlugs[0] } });
@@ -85,6 +85,24 @@ function revalidateShop() {
   revalidatePath("/");
   revalidatePath("/signature");
   revalidatePath("/search");
+  revalidatePath("/meta-catalog.csv");
+  revalidatePath("/sitemap.xml");
+}
+
+/** Append -2, -3… until the slug is free (ignoring the product being edited). */
+async function uniqueSlug(slug: string, excludeId?: string) {
+  let candidate = slug;
+  for (let n = 2; ; n++) {
+    const hit = await prisma.product.findUnique({ where: { slug: candidate }, select: { id: true } });
+    if (!hit || hit.id === excludeId) return candidate;
+    candidate = `${slug}-${n}`;
+  }
+}
+
+function formError(err: unknown) {
+  console.error("[admin/products] save failed", err);
+  const msg = err instanceof Error ? err.message : String(err);
+  return msg.length > 200 ? "Could not save product. Check the fields and try again." : msg;
 }
 
 export async function toggleProductPublished(id: string, published: boolean) {
@@ -97,8 +115,13 @@ export async function toggleProductPublished(id: string, published: boolean) {
 export async function createProduct(formData: FormData) {
   const admin = await requireAdmin();
   if (!admin) throw new Error("Unauthorized");
-  const data = await productFromForm(formData);
-  await prisma.product.create({ data });
+  try {
+    const data = await productFromForm(formData);
+    data.slug = await uniqueSlug(data.slug);
+    await prisma.product.create({ data });
+  } catch (err) {
+    redirect(`/admin/products/new?error=${encodeURIComponent(formError(err))}`);
+  }
   revalidateShop();
   redirect("/admin/products");
 }
@@ -106,8 +129,13 @@ export async function createProduct(formData: FormData) {
 export async function updateProduct(id: string, formData: FormData) {
   const admin = await requireAdmin();
   if (!admin) throw new Error("Unauthorized");
-  const data = await productFromForm(formData);
-  await prisma.product.update({ where: { id }, data });
+  try {
+    const data = await productFromForm(formData);
+    data.slug = await uniqueSlug(data.slug, id);
+    await prisma.product.update({ where: { id }, data });
+  } catch (err) {
+    redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(formError(err))}`);
+  }
   revalidateShop();
   redirect("/admin/products");
 }

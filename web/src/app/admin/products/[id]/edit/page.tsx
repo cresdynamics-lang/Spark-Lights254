@@ -7,10 +7,11 @@ import { updateProduct, deleteProduct } from "../../actions";
 
 export const metadata = { title: "Admin · Edit product" };
 
-type Props = { params: Promise<{ id: string }> };
+type Props = { params: Promise<{ id: string }>; searchParams: Promise<{ error?: string }> };
 
-export default async function EditProductPage({ params }: Props) {
+export default async function EditProductPage({ params, searchParams }: Props) {
   const { id } = await params;
+  const { error } = await searchParams;
   const [product, categories, dbRooms] = await Promise.all([
     prisma.product.findUnique({ where: { id }, include: { category: true } }),
     prisma.category.findMany({
@@ -39,6 +40,9 @@ export default async function EditProductPage({ params }: Props) {
         <div>
           <h1 className="font-serif text-3xl sm:text-4xl mb-2">Edit product</h1>
           <p className="text-mute">{product.name}</p>
+          {error ? (
+            <p className="mt-4 rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>
+          ) : null}
         </div>
         <form action={deleteProduct.bind(null, product.id)}>
           <button type="submit" className="label border border-red-300 text-red-700 px-4 py-2 rounded-full">

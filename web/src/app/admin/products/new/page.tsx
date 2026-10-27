@@ -6,7 +6,12 @@ import { createProduct } from "../actions";
 
 export const metadata = { title: "Admin · New product" };
 
-export default async function NewProductPage() {
+export default async function NewProductPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   const [categories, dbRooms] = await Promise.all([
     prisma.category.findMany({
       orderBy: { sortOrder: "asc" },
@@ -27,6 +32,9 @@ export default async function NewProductPage() {
     <AdminChrome title="New product">
       <h1 className="font-serif text-3xl sm:text-4xl mb-2">New product</h1>
       <p className="text-mute mb-8">Add a fixture to the live catalogue.</p>
+      {error ? (
+        <p className="mb-6 rounded-md border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-800">{error}</p>
+      ) : null}
       <ProductForm
         action={createProduct}
         categories={categories}
