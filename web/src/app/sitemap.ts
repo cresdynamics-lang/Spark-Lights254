@@ -4,6 +4,10 @@ import { SEO_INVENTORY } from "@/lib/seo-inventory";
 import { prisma } from "@/lib/db";
 import { products as staticProducts } from "@/lib/data";
 
+/** Rebuild hourly so new SEO pages and products appear without a redeploy. */
+export const revalidate = 3600;
+
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
