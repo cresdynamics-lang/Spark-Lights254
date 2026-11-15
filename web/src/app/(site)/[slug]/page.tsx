@@ -1,12 +1,17 @@
 import { notFound } from "next/navigation";
-import { audiences, getAudience } from "@/lib/audiences";
+import { audiences, getAudience, audienceProducts } from "@/lib/audiences";
+import { catalogProductsMatching } from "@/lib/catalog";
 import { AudienceView } from "@/components/audience/AudienceView";
 import { seoMetadata } from "@/lib/seo";
 import {
   JsonLd,
   breadcrumbSchema,
   collectionPageSchema,
+  faqPageSchema,
 } from "@/components/seo/JsonLd";
+
+/** Refresh hourly so newly added stock shows on audience pages. */
+export const revalidate = 3600;
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -24,6 +29,12 @@ export default async function AudienceSlugPage({ params }: Props) {
   const page = getAudience(slug);
   if (!page) notFound();
 
+  const live = await catalogProductsMatching({
+    categories: page.productCategories,
+    rooms: page.productRooms,
+  });
+  const items = live.length ? live : audienceProducts(page);
+
   return (
     <>
       <JsonLd
@@ -36,14 +47,15 @@ export default async function AudienceSlugPage({ params }: Props) {
             name: page.h1,
             description: page.description,
             path: page.path,
-            items: page.productSlugs.slice(0, 8).map((s) => ({
-              name: s,
-              path: `/products/${s}`,
+            items: items.slice(0, 8).map((p) => ({
+              name: p.name,
+              path: `/products/${p.slug}`,
             })),
           }),
+          ...(page.faqs.length ? [faqPageSchema(page.faqs)!] : []),
         ]}
       />
-      <AudienceView page={page} />
+      <AudienceView page={page} items={items} />
     </>
   );
 }

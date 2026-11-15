@@ -251,3 +251,29 @@ export async function catalogStats() {
   ]);
   return { connected: true, categories, products, rooms };
 }
+
+/** Live, published products in any of the given categories or rooms (newest stock first). */
+export async function catalogProductsMatching(opts: {
+  categories?: string[];
+  rooms?: string[];
+  limit?: number;
+}): Promise<Product[]> {
+  const categories = opts.categories || [];
+  const rooms = opts.rooms || [];
+  if (!(categories.length || rooms.length) || !(await dbReady())) return [];
+  const rows = await prisma.product.findMany({
+    where: {
+      published: true,
+      OR: [
+        ...(categories.length
+          ? [{ categories: { hasSome: categories } }, { category: { slug: { in: categories } } }]
+          : []),
+        ...(rooms.length ? [{ rooms: { hasSome: rooms } }] : []),
+      ],
+    },
+    include: { category: true },
+    orderBy: [{ signature: "desc" }, { price: "desc" }],
+    take: opts.limit ?? 8,
+  });
+  return rows.map(mapProduct);
+}

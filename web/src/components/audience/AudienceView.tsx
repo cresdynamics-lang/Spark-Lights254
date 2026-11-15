@@ -4,13 +4,10 @@ import { ProductCard } from "@/components/ui/ProductCard";
 import { FAQ } from "@/components/ui/FAQ";
 import { ClosingCTA } from "@/components/ui/ClosingCTA";
 import { WhatsAppButton, Button } from "@/components/ui/Button";
-import {
-  type AudiencePage,
-  audienceProducts,
-} from "@/lib/audiences";
+import type { AudiencePage } from "@/lib/audiences";
+import type { Product } from "@/lib/data";
 
-export function AudienceView({ page }: { page: AudiencePage }) {
-  const items = audienceProducts(page);
+export function AudienceView({ page, items }: { page: AudiencePage; items: Product[] }) {
 
   return (
     <>
@@ -28,6 +25,9 @@ export function AudienceView({ page }: { page: AudiencePage }) {
           <p className="text-mute text-base sm:text-lg max-w-2xl leading-relaxed">
             {page.description}
           </p>
+          {page.intro ? (
+            <p className="text-ink/80 text-sm sm:text-base max-w-2xl leading-relaxed mt-4">{page.intro}</p>
+          ) : null}
         </div>
       </section>
 

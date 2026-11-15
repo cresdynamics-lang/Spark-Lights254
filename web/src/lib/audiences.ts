@@ -24,6 +24,11 @@ export type AudiencePage = {
   process?: { title: string; steps: { n: string; title: string; body: string }[] };
   productsTitle: string;
   productSlugs: string[];
+  /** Pull live in-stock products from these categories / rooms (falls back to productSlugs). */
+  productCategories?: string[];
+  productRooms?: string[];
+  /** Short intro paragraph under the hero, written for the searcher. */
+  intro?: string;
   faqs: { q: string; a: string }[];
   ctaTitle: string;
   ctaBody: string;
@@ -327,6 +332,7 @@ export const audiences: AudiencePage[] = [
       ],
     },
     productsTitle: "Hospitality favourites",
+    productCategories: ["chandeliers", "pendant-lights", "wall-lights"],
     productSlugs: pick(
       "aurelia-tiered-chandelier",
       "meridian-black-gold-chandelier",
@@ -468,7 +474,9 @@ export const audiences: AudiencePage[] = [
     title: "Restaurant Lighting Nairobi | Pendants & Wall Lights",
     h1: "Restaurant Lighting in Nairobi",
     description:
-      "Warm, welcoming restaurant lighting in Nairobi. Pendants, wall lights and chandeliers, supplied and installed.",
+      "Warm, welcoming restaurant lighting in Nairobi. Pendants, wall lights and chandeliers in stock, supplied and installed.",
+    intro:
+      "The right light fills seats in the evening: warm pendants over tables, glowing walls and a statement piece at the entrance. Opening or refreshing a restaurant, café or bar? Start with the pieces below.",
     cardsTitle: "Set the mood for every service",
     cards: [
       { title: "Dining room", body: "Warm pendants and dimmable layers for intimate tables.", tag: "Core" },
@@ -484,11 +492,13 @@ export const audiences: AudiencePage[] = [
       ["Bar", "Guide & glow", "Wall lights"],
     ],
     productsTitle: "Restaurant favourites",
+    productCategories: ["pendant-lights", "wall-lights", "chandeliers", "led-glow"],
     productSlugs: pick("trefoil-pendant", "clarity-glass-pendant", "cadence-wall-light", "aurelia-tiered-chandelier"),
     faqs: [
       { q: "Do you install in restaurants?", a: "Yes — scheduled around your service hours." },
       { q: "Can you meet opening deadlines?", a: "Tell us the date and we plan supply and install." },
       { q: "Do you work with designers?", a: "Yes — see the trade programme on the quote page." },
+      { q: "What lighting is best for a restaurant at night?", a: "Warm 2700K light, low pendants over tables, glowing wall lights and dimmers so the room gets more intimate as the evening goes on." },
     ],
     ctaTitle: "Opening a restaurant?",
     ctaBody: "Tell us about the space. We will visit, design and quote.",
@@ -503,7 +513,9 @@ export const audiences: AudiencePage[] = [
     title: "Hotel Lighting Kenya | Lobby, Rooms & Restaurants",
     h1: "Hotel Lighting in Kenya",
     description:
-      "Lobby chandeliers, bedside lights and corridor lighting for hotels and lodges. Supplied and installed countrywide.",
+      "Luxury lobby chandeliers, bedside lights and corridor lighting for hotels and lodges. In stock, supplied and installed countrywide.",
+    intro:
+      "Guests judge a hotel in the evening: the lobby on arrival, the restaurant at dinner, the room at night. Layered warm light with one memorable statement piece gets you there.",
     cardsTitle: "Guest journey lighting",
     cards: [
       { title: "Lobby", body: "Memorable statement lighting for first impressions.", tag: "Arrival" },
@@ -519,11 +531,13 @@ export const audiences: AudiencePage[] = [
       ["Corridors", "Safe", "Flush ceilings"],
     ],
     productsTitle: "Hotel favourites",
+    productCategories: ["chandeliers", "wall-lights", "ceiling-lights"],
     productSlugs: pick("meridian-black-gold-chandelier", "opal-globe-wall-light", "halo-ring-ceiling-light", "lumen-flush-ceiling"),
     faqs: [
       { q: "Do you supply outside Nairobi?", a: "Yes, countrywide on request." },
       { q: "Can you meet opening deadlines?", a: "Yes — we plan to your schedule." },
       { q: "Do you work with designers?", a: "Yes — trade access available." },
+      { q: "How do we give the hotel a luxurious evening look?", a: "A statement chandelier in the lobby, warm wall lights in corridors and lounges, dimmable pendants in the restaurant and outdoor lights on the facade." },
     ],
     ctaTitle: "Lighting a hotel or lodge?",
     ctaBody: "Request a site visit and we will design and quote.",
@@ -598,6 +612,222 @@ export const audiences: AudiencePage[] = [
     ctaBody: "Send photos of the displays. We will suggest and quote.",
     ctaPrimary: "Request a quote",
     ctaSecondary: "Send a photo",
+    ctaPrimaryHref: "/request-a-quote",
+  },
+  {
+    slug: "luxury-home-lighting-nairobi",
+    path: "/luxury-home-lighting-nairobi",
+    breadcrumb: "Spaces / Home owners",
+    title: "Luxury Home Lighting Nairobi | Chandeliers & Pendants",
+    h1: "Luxury Home Lighting in Nairobi",
+    description:
+      "Chandeliers, pendants and wall lights in stock for homes in Karen, Runda, Lavington and across Nairobi. Delivered and installed.",
+    intro:
+      "Building, renovating or finishing a new home? Light it in layers: one statement piece per room, warm wall light for the evening, and soft ceiling light for everyday living. Everything below is in stock in Nairobi.",
+    cardsTitle: "Light every room the way you live in it",
+    cardsSubtitle: "By room",
+    cards: [
+      { title: "Living room", body: "A statement chandelier with warm wall lights for a calm evening glow.", tag: "Statement" },
+      { title: "Dining room", body: "A pendant or chandelier centred over the table, on a dimmer.", tag: "Entertaining" },
+      { title: "Staircase & double volume", body: "Long-drop chandeliers that fill tall spaces without glare.", tag: "Height" },
+      { title: "Bedroom", body: "Soft ceiling light plus bedside wall lights for winding down.", tag: "Rest" },
+      { title: "Kitchen island", body: "A row of pendants for clear light on the counter.", tag: "Task" },
+      { title: "Outdoor & entrance", body: "Wall and path lights that make the house look good at night.", tag: "Kerb appeal" },
+    ],
+    guideEyebrow: "Home lighting guide",
+    guideTitle: "Choosing the right size and light",
+    guideIntro: "Quick rules our team uses on site visits across Nairobi.",
+    guideHeaders: ["Space", "Rule of thumb", "Our pick"],
+    guideRows: [
+      ["Living room", "Chandelier width (cm) ≈ room length + width (m) × 10", "Crystal or tiered chandelier"],
+      ["Dining table", "About half to two-thirds of the table width, 75–85 cm above it", "Pendant or round chandelier"],
+      ["Double volume", "Bottom of fixture at least 2.4 m off the floor", "Long-drop chandelier"],
+      ["Bedroom", "Warm 2700–3000K, dimmable", "Flush ceiling + wall lights"],
+      ["Exterior", "Warm light, aimed down and along paths", "Outdoor wall & solar lights"],
+    ],
+    productsTitle: "In stock for Nairobi homes",
+    productSlugs: pick("aurelia-tiered-chandelier", "meridian-black-gold-chandelier", "opal-globe-wall-light", "halo-ring-ceiling-light"),
+    productCategories: ["chandeliers", "pendant-lights", "wall-lights"],
+    faqs: [
+      { q: "Do you deliver and install in Karen, Runda and Lavington?", a: "Yes. We deliver across Nairobi and our team can install chandeliers, pendants and wall lights for you." },
+      { q: "What size chandelier do I need for my living room?", a: "Add the room's length and width in metres and multiply by 10 — that is roughly the chandelier width in centimetres. Send us the room size and we will confirm." },
+      { q: "Warm white or cool white for a home?", a: "Warm white (2700–3000K) for living rooms, dining and bedrooms. Neutral white (4000K) suits kitchens and studies." },
+      { q: "Can I see the lights before buying?", a: "Yes — visit the showroom or ask on WhatsApp for photos and videos of any light in stock." },
+      { q: "Can you light a whole new house?", a: "Yes. Send your floor plan and we will suggest lights room by room with one quote." },
+    ],
+    ctaTitle: "Finishing a home?",
+    ctaBody: "Send your floor plan or room photos and we will suggest a light for every room.",
+    ctaPrimary: "Get a home lighting quote",
+    ctaSecondary: "Send photos on WhatsApp",
+    ctaPrimaryHref: "/request-a-quote",
+  },
+  {
+    slug: "interior-designer-lighting-supplier-nairobi",
+    path: "/interior-designer-lighting-supplier-nairobi",
+    breadcrumb: "Trade / Interior designers",
+    title: "Lighting Supplier for Interior Designers Nairobi",
+    h1: "Lighting for Interior Designers in Nairobi",
+    description:
+      "Chandeliers, pendants and wall lights in stock for residential, hotel and commercial projects. Trade pricing and fast supply in Kenya.",
+    intro:
+      "Specify lights your client can actually get on time. We hold stock in Nairobi, share photos and dimensions fast, and quote by project so your schedule holds.",
+    cardsTitle: "Built around how designers work",
+    cardsSubtitle: "Trade programme",
+    cards: [
+      { title: "Stock you can specify", body: "Pieces held in Nairobi, so lead times don't break your handover.", tag: "Availability" },
+      { title: "Project quotes", body: "One quote per project with quantities by room or floor.", tag: "Trade pricing" },
+      { title: "Fast details", body: "Dimensions, finishes and photos on WhatsApp for your mood boards.", tag: "Specs" },
+      { title: "Site support", body: "Our installers work to your layout and your client's dates.", tag: "Install" },
+    ],
+    guideEyebrow: "Specifying",
+    guideTitle: "What we send with every quote",
+    guideHeaders: ["Item", "What you get", "Why it helps"],
+    guideRows: [
+      ["Product details", "Size, finish, lamp type, colour temperature", "Drop straight into your spec sheet"],
+      ["Photos", "Real photos of the piece in stock", "Client sign-off without surprises"],
+      ["Quantities", "Priced by room, floor or area", "Easy to fit a client budget"],
+      ["Timeline", "Supply and install dates", "Plan around other trades"],
+    ],
+    productsTitle: "Designer favourites in stock",
+    productSlugs: pick("meridian-black-gold-chandelier", "trefoil-pendant", "clarity-glass-pendant", "cadence-wall-light"),
+    productCategories: ["chandeliers", "pendant-lights", "wall-lights"],
+    faqs: [
+      { q: "Do you offer trade pricing for interior designers?", a: "Yes. Request a quote with your project details and we price by project and quantity." },
+      { q: "Can you share specs and photos for client presentations?", a: "Yes — dimensions, finishes and real photos of the stock, usually the same day on WhatsApp." },
+      { q: "Do you supply hospitality and commercial projects?", a: "Yes — homes, hotels, restaurants, offices and shops across Kenya." },
+      { q: "Can your team install to my layout?", a: "Yes. Share the lighting layout and we install to it, scheduled with your site." },
+    ],
+    ctaTitle: "Working on a project?",
+    ctaBody: "Send the drawings or a list of spaces and we will come back with options and a trade quote.",
+    ctaPrimary: "Request a trade quote",
+    ctaSecondary: "Send drawings on WhatsApp",
+    ctaPrimaryHref: "/request-a-quote",
+  },
+  {
+    slug: "lighting-supplier-engineers-contractors-kenya",
+    path: "/lighting-supplier-engineers-contractors-kenya",
+    breadcrumb: "Trade / Engineers & contractors",
+    title: "Lighting Supplier for Engineers & Contractors Kenya",
+    h1: "Lighting Supply for Engineers & Contractors",
+    description:
+      "LED ceiling lights, wall lights and decorative fittings in bulk for engineers, contractors and architects in Kenya. Quotes from your BOQ.",
+    intro:
+      "Send your BOQ or lighting schedule and we will price it line by line from stock — ceiling lights, LED fittings, wall lights, outdoor and decorative pieces.",
+    cardsTitle: "Supply that keeps the site moving",
+    cardsSubtitle: "For MEP teams",
+    cards: [
+      { title: "Quote from your BOQ", body: "Line-by-line pricing against your schedule.", tag: "Tender ready" },
+      { title: "Bulk stock", body: "Ceiling and LED fittings held in quantity in Nairobi.", tag: "Volume" },
+      { title: "Clear specs", body: "Wattage, colour temperature, size and finish for every line.", tag: "Specs" },
+      { title: "Phased delivery", body: "Deliver by floor or phase to match the programme.", tag: "Logistics" },
+    ],
+    guideEyebrow: "Quick reference",
+    guideTitle: "Typical lighting by space",
+    guideHeaders: ["Space", "Typical approach", "Fitting type"],
+    guideRows: [
+      ["Offices", "Even, glare-controlled light around 4000K", "Flush LED ceilings & panels"],
+      ["Corridors & stairs", "Continuous light, warm or neutral", "Flush ceilings, wall lights"],
+      ["Apartments", "Warm 3000K in living, 4000K in kitchens", "Ceiling lights + pendants"],
+      ["Lobbies & receptions", "Decorative feature plus general light", "Chandelier + LED ceilings"],
+      ["Exterior", "Low glare, weather rated", "Outdoor wall & solar lights"],
+    ],
+    productsTitle: "Fittings in stock for projects",
+    productSlugs: pick("lumen-flush-ceiling", "halo-ring-ceiling-light", "cadence-wall-light", "opal-globe-wall-light"),
+    productCategories: ["ceiling-lights", "led-glow", "wall-lights", "outdoor-solar"],
+    faqs: [
+      { q: "Can you price our BOQ or lighting schedule?", a: "Yes. Send it as PDF or Excel and we price each line from stock, with alternatives where needed." },
+      { q: "Do you supply in bulk for apartments and offices?", a: "Yes — ceiling and LED fittings in quantity, delivered by floor or phase." },
+      { q: "Do you deliver outside Nairobi?", a: "Yes, we deliver across Kenya on request." },
+      { q: "Can you provide specs for approvals?", a: "Yes — wattage, colour temperature, dimensions and finish for each fitting." },
+    ],
+    ctaTitle: "Have a BOQ to price?",
+    ctaBody: "Send the schedule and site location. We reply with a line-by-line quote.",
+    ctaPrimary: "Send your BOQ",
+    ctaSecondary: "Talk on WhatsApp",
+    ctaPrimaryHref: "/request-a-quote",
+  },
+  {
+    slug: "luxury-chandeliers-nairobi",
+    path: "/luxury-chandeliers-nairobi",
+    breadcrumb: "Spaces / Luxury lighting",
+    title: "Luxury Chandeliers in Nairobi | Crystal, Gold & Modern",
+    h1: "Luxury Chandeliers & Statement Lighting in Nairobi",
+    description:
+      "Crystal, gold and modern luxury chandeliers in stock in Nairobi for homes, hotel lobbies and restaurants. Delivered and installed across Kenya.",
+    intro:
+      "A good chandelier is the first thing guests see and the last thing they forget. These are the statement pieces we have in stock right now.",
+    cardsTitle: "Find your statement piece",
+    cardsSubtitle: "By style",
+    cards: [
+      { title: "Crystal", body: "Sparkle and reflected light for grand living rooms and lobbies.", tag: "Classic" },
+      { title: "Black & gold", body: "Bold metal frames that suit modern and hotel interiors.", tag: "Modern luxury" },
+      { title: "Tiered & long-drop", body: "Made for double-volume spaces and staircases.", tag: "Height" },
+    ],
+    guideEyebrow: "Buying guide",
+    guideTitle: "Getting a luxury chandelier right",
+    guideHeaders: ["Question", "Answer", "Tip"],
+    guideRows: [
+      ["How big?", "Room length + width (m) × 10 ≈ width in cm", "Go bigger in double volume"],
+      ["How high?", "About 2.1–2.4 m clear above the floor", "75–85 cm above a dining table"],
+      ["What light?", "Warm white 2700–3000K", "Add a dimmer for evenings"],
+      ["Who installs?", "Our team, with ceiling support for heavy pieces", "Plan the ceiling point early"],
+    ],
+    productsTitle: "Luxury pieces in stock",
+    productSlugs: pick("aurelia-tiered-chandelier", "meridian-black-gold-chandelier"),
+    productCategories: ["chandeliers"],
+    faqs: [
+      { q: "Where can I buy a luxury chandelier in Nairobi?", a: "Shop the chandeliers in stock here, visit our showroom, or ask on WhatsApp for photos and videos." },
+      { q: "Do you install heavy chandeliers?", a: "Yes. Our team installs with the right ceiling support, including double-volume spaces." },
+      { q: "Do you supply chandeliers for hotels and restaurants?", a: "Yes — lobby, dining room and bar chandeliers, supplied and installed across Kenya." },
+      { q: "Can the chandelier be dimmed?", a: "Most can with the right dimmer and bulbs. Ask and we will confirm for the piece you like." },
+    ],
+    ctaTitle: "Looking for a statement piece?",
+    ctaBody: "Tell us the room size and ceiling height and we will shortlist chandeliers that fit.",
+    ctaPrimary: "Get chandelier advice",
+    ctaSecondary: "Ask on WhatsApp",
+    ctaPrimaryHref: "/request-a-quote",
+  },
+  {
+    slug: "evening-ambience-lighting-nairobi",
+    path: "/evening-ambience-lighting-nairobi",
+    breadcrumb: "Spaces / Evening ambience",
+    title: "Evening Lighting for Hotels & Restaurants | Nairobi",
+    h1: "Evening Ambience Lighting for Hotels & Restaurants",
+    description:
+      "Warm night-time lighting for hotels, restaurants, lounges and rooftops in Nairobi. Wall lights, pendants, LED glow and outdoor lights in stock.",
+    intro:
+      "Guests choose where to eat and stay by how a place looks after dark — and by the photos they post. Warm, layered, low light makes a space feel full, intimate and worth coming back to.",
+    cardsTitle: "Make the space glow after sunset",
+    cardsSubtitle: "Night look",
+    cards: [
+      { title: "Dining & lounge", body: "Low warm pendants over tables and dimmers for late service.", tag: "Intimate" },
+      { title: "Bar & feature walls", body: "Up-down wall lights and LED glow that make walls look rich at night.", tag: "Glow" },
+      { title: "Terraces & rooftops", body: "Outdoor and solar lights for evening seating and views.", tag: "Outdoor" },
+      { title: "Entrance & facade", body: "Wall lights that make the building look open and inviting from the road.", tag: "Arrival" },
+    ],
+    guideEyebrow: "Night lighting guide",
+    guideTitle: "How to get a warm evening look",
+    guideHeaders: ["Layer", "What it does", "Our pick"],
+    guideRows: [
+      ["Warm colour", "2700K reads as cosy and flatters food and faces", "Warm-white bulbs throughout"],
+      ["Low pools of light", "Light on tables, not the ceiling", "Pendants on dimmers"],
+      ["Wall glow", "Makes rooms feel full and expensive", "Up-down wall lights"],
+      ["Accent", "Draws the eye to bar, art and plants", "LED glow & accent lights"],
+      ["Outside", "Gets you noticed from the street", "Outdoor wall & solar lights"],
+    ],
+    productsTitle: "Evening favourites in stock",
+    productSlugs: pick("cadence-wall-light", "trefoil-pendant", "clarity-glass-pendant", "opal-globe-wall-light"),
+    productCategories: ["wall-lights", "pendant-lights", "led-glow", "outdoor-solar"],
+    faqs: [
+      { q: "What lighting makes a restaurant look good at night?", a: "Warm 2700K light, low pendants over tables, glowing wall lights and dimmers so you can lower the light as the evening goes on." },
+      { q: "How do hotels get a luxurious evening feel?", a: "Layer it: a statement chandelier in the lobby, warm wall lights in corridors and lounges, and outdoor lights on the facade and terraces." },
+      { q: "Can you light terraces and rooftops?", a: "Yes — outdoor wall lights and solar lights for seating areas, paths and edges." },
+      { q: "Can you install without closing the business?", a: "Yes. We schedule installation around your service hours." },
+    ],
+    ctaTitle: "Want your space to glow at night?",
+    ctaBody: "Send evening photos of your space and we will suggest the lights to change.",
+    ctaPrimary: "Request a site visit",
+    ctaSecondary: "Send photos on WhatsApp",
     ctaPrimaryHref: "/request-a-quote",
   },
 ];

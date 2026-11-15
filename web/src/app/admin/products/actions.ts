@@ -85,6 +85,7 @@ function revalidateShop() {
   revalidatePath("/");
   revalidatePath("/signature");
   revalidatePath("/search");
+  revalidatePath("/[slug]", "page");
   revalidatePath("/meta-catalog.csv");
   revalidatePath("/sitemap.xml");
 }

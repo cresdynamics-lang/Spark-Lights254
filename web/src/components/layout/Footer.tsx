@@ -141,6 +141,25 @@ export function Footer() {
       </div>
 
       <div className="border-t border-paper/10">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-wrap gap-x-5 gap-y-2 items-center text-[0.55rem] sm:text-[0.65rem] tracking-[0.12em] uppercase text-paper/45">
+          <span>Lighting for</span>
+          {[
+            ["Luxury homes", "/luxury-home-lighting-nairobi"],
+            ["Interior designers", "/interior-designer-lighting-supplier-nairobi"],
+            ["Engineers & contractors", "/lighting-supplier-engineers-contractors-kenya"],
+            ["Restaurants", "/restaurant-lighting-nairobi"],
+            ["Hotels", "/hotel-lighting-kenya"],
+            ["Evening ambience", "/evening-ambience-lighting-nairobi"],
+            ["Luxury chandeliers", "/luxury-chandeliers-nairobi"],
+          ].map(([label, href]) => (
+            <Link key={href} href={href} className="hover:text-paper">
+              {label}
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      <div className="border-t border-paper/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 text-[0.6rem] tracking-[0.12em] uppercase text-paper/40">
           <p>© 2026 Sparklights 254. All rights reserved.</p>
           <p className="flex flex-wrap gap-x-3 gap-y-1">
