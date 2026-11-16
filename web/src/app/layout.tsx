@@ -25,6 +25,8 @@ const cormorant = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
+  // Bing Webmaster Tools ownership — keep after verification.
+  verification: { other: { "msvalidate.01": "7E9E2511C9B5474798DC314A53217CFF" } },
   title: {
     default: "Sparklights 254 | Lighting Shop Nairobi",
     template: "%s | Sparklights 254",
