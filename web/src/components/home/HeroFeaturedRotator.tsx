@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { formatPrice, type Product } from "@/lib/data";
+import type { Product } from "@/lib/data";
+import { Price } from "@/components/promo/Price";
 
 type Featured = Pick<Product, "slug" | "name" | "price" | "image" | "category" | "type">;
 
@@ -58,7 +59,7 @@ export function HeroFeaturedRotator({ products }: { products: Featured[] }) {
           <p className="font-serif text-paper text-sm sm:text-lg leading-snug line-clamp-2 mb-1">
             {p.name}
           </p>
-          <p className="text-paper text-xs sm:text-sm font-medium">{formatPrice(p.price)}</p>
+          <p className="text-paper text-xs sm:text-sm font-medium"><Price price={p.price} /></p>
         </div>
       </div>
     </Link>

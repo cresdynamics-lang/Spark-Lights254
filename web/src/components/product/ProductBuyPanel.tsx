@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { Product } from "@/lib/data";
-import { formatPrice } from "@/lib/data";
+
 import { WhatsAppButton } from "@/components/ui/Button";
 import { productGalleryImages, productOrderMessage, productPageUrl, absoluteAssetUrl } from "@/lib/whatsapp-order";
 import { logLead } from "@/lib/leads";
+import { Price } from "@/components/promo/Price";
 
 export function ProductBuyPanel({ product }: { product: Product }) {
   /** Only this product's own images — never a shared room filler. */
@@ -63,7 +64,7 @@ export function ProductBuyPanel({ product }: { product: Product }) {
         <h1 className="font-serif text-4xl md:text-5xl text-ink leading-tight mb-3">
           {product.name}
         </h1>
-        <p className="text-xl text-ink mb-1">{formatPrice(product.price)}</p>
+        <p className="text-xl text-ink mb-1"><Price price={product.price} /></p>
         <p className="text-sm text-mute mb-6">Price includes VAT · Order on WhatsApp</p>
         <p className="text-mute leading-relaxed mb-8 max-w-md">{product.description}</p>
 

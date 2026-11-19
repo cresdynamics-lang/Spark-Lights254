@@ -1,5 +1,6 @@
 import { SITE } from "@/lib/constants";
 import { formatPrice, type Product } from "@/lib/data";
+import { PROMO, isPromoActive, promoPrice } from "@/lib/promo";
 
 export function absoluteAssetUrl(path: string) {
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
@@ -39,8 +40,14 @@ export function productOrderMessage(
     "",
     `*${product.name}*`,
     `Type: ${product.type}`,
-    `Price: ${formatPrice(product.price)}`,
   ];
+  if (isPromoActive()) {
+    lines.push(
+      `Price: ${formatPrice(promoPrice(product.price))} (${PROMO.name} ${PROMO.percentOff}% off, was ${formatPrice(product.price)})`,
+    );
+  } else {
+    lines.push(`Price: ${formatPrice(product.price)}`);
+  }
   if (opts?.finish) lines.push(`Finish: ${opts.finish}`);
   if (opts?.size) lines.push(`Size: ${opts.size}`);
   lines.push(

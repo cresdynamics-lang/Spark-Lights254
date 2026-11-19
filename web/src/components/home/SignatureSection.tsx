@@ -1,8 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { catalogSignatureProducts } from "@/lib/catalog";
-import { formatPrice } from "@/lib/data";
+
 import { Reveal } from "@/components/ui/Reveal";
+import { Price } from "@/components/promo/Price";
 
 export async function SignatureSection() {
   const items = (await catalogSignatureProducts()).slice(0, 2);
@@ -48,7 +49,7 @@ export async function SignatureSection() {
               </div>
               <p className="label text-paper/50 mb-1 text-[0.6rem] sm:text-[0.6875rem]">{p.type}</p>
               <h3 className="font-serif text-base sm:text-2xl mb-1 leading-snug">{p.name}</h3>
-              <p className="text-paper/60 text-xs sm:text-sm">{formatPrice(p.price)}</p>
+              <p className="text-paper/60 text-xs sm:text-sm"><Price price={p.price} /></p>
             </Link>
           ))}
         </div>
