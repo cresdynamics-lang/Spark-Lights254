@@ -56,7 +56,7 @@ const policies: Record<string, { title: string; body: string[] }> = {
   terms: {
     title: "Terms of Sale",
     body: [
-      "Prices include VAT unless stated otherwise.",
+      "Prices exclude VAT unless stated otherwise.",
       "Orders are confirmed once payment is received.",
       "PLACEHOLDER — add full terms of sale when provided.",
     ],

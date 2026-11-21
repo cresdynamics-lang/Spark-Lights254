@@ -1,5 +1,3 @@
-import { currentPrice } from "@/lib/promo";
-
 export const META_PIXEL_ID = "1626392329151643";
 
 export type MetaContent = {
@@ -45,7 +43,7 @@ export function metaProductPayload(product: {
     content_ids: [product.slug],
     content_type: "product",
     content_category: product.category || product.type,
-    value: currentPrice(product.price),
+    value: product.price,
     currency: "KES",
     num_items: 1,
   };

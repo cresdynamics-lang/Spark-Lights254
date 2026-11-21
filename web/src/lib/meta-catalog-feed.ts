@@ -1,6 +1,5 @@
 import { SITE } from "@/lib/constants";
 import { prisma } from "@/lib/db";
-import { PROMO, isPromoActive, promoPrice } from "@/lib/promo";
 
 /** Google taxonomy — home lighting (valid for Meta google_product_category). */
 const GOOGLE_PRODUCT_CATEGORY = "Home & Garden > Lighting";
@@ -12,8 +11,6 @@ const CSV_COLUMNS = [
   "availability",
   "condition",
   "price",
-  "sale_price",
-  "sale_price_effective_date",
   "link",
   "image_link",
   "brand",
@@ -61,7 +58,6 @@ export async function buildMetaCatalogCsv(siteOrigin = SITE.url): Promise<string
     rows = [];
   }
 
-  const promoLive = isPromoActive();
   const lines = [CSV_COLUMNS.join(",")];
 
   for (const p of rows) {
@@ -78,8 +74,6 @@ export async function buildMetaCatalogCsv(siteOrigin = SITE.url): Promise<string
       availability: availabilityFor(p.slug),
       condition: "new",
       price: formatPrice(p.price),
-      sale_price: promoLive ? formatPrice(promoPrice(p.price)) : "",
-      sale_price_effective_date: promoLive ? `${PROMO.startsAt}/${PROMO.endsAt}` : "",
       link,
       image_link: imageLink,
       brand: SITE.fullName,

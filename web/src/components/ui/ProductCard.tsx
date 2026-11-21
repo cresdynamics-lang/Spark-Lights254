@@ -2,12 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import type { Product } from "@/lib/data";
+import { formatPrice, type Product } from "@/lib/data";
 import { whatsappUrl } from "@/lib/constants";
 import { productOrderMessage, productPageUrl } from "@/lib/whatsapp-order";
 import { metaProductPayload, trackMeta } from "@/lib/meta-pixel";
 import { logLead } from "@/lib/leads";
-import { Price } from "@/components/promo/Price";
 
 function WhatsAppIcon({ className = "w-3.5 h-3.5" }: { className?: string }) {
   return (
@@ -82,7 +81,7 @@ export function ProductCard({
       </Link>
 
       <div className="mt-2 flex items-center justify-between gap-2">
-        <p className="text-xs sm:text-sm text-mute shrink-0"><Price price={product.price} /></p>
+        <p className="text-xs sm:text-sm text-mute shrink-0">{formatPrice(product.price)}</p>
         <a
           href={orderHref}
           target="_blank"

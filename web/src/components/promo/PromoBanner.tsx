@@ -14,7 +14,7 @@ export function PromoBanner() {
     >
       <span className="font-semibold uppercase tracking-[0.12em]">{PROMO.name}</span>
       {" · "}
-      {PROMO.percentOff}% off every light
+      Up to {PROMO.upToPercentOff}% off lights
       <span className="hidden sm:inline"> · Ends 27 Nov</span>
       <span className="underline underline-offset-2 ml-2">Shop now</span>
     </Link>

@@ -4,9 +4,8 @@ import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/lib/data";
-
+import { formatPrice } from "@/lib/data";
 import { whatsappUrl } from "@/lib/constants";
-import { Price } from "@/components/promo/Price";
 
 const ROOMS = [
   { id: "dining-room", label: "Dining" },
@@ -124,7 +123,7 @@ export function LightFinder() {
                     </div>
                     <div className="p-3">
                       <p className="font-serif text-lg leading-snug">{p.name}</p>
-                      <p className="label text-paper/50 mt-1"><Price price={p.price} /></p>
+                      <p className="label text-paper/50 mt-1">{formatPrice(p.price)}</p>
                     </div>
                   </Link>
                 ))}
